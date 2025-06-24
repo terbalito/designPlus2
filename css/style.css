@@ -18,6 +18,8 @@
     --background-color: var(--background-dark);
     --card-bg-color: var(--card-dark);
     --header-bg-color: rgba(10, 10, 16, 0.8);
+    --hero-overlay-start: rgba(2, 16, 79, 0.7);
+    --hero-overlay-end: rgba(26, 17, 19, 0.8);
 }
 
 [data-theme="light"] {
@@ -25,6 +27,8 @@
     --background-color: var(--background-light);
     --card-bg-color: var(--card-light);
     --header-bg-color: rgba(255, 255, 255, 0.8);
+    --hero-overlay-start: rgba(255, 255, 255, 0.85);
+    --hero-overlay-end: rgba(244, 244, 249, 0.85);
 }
 
 *, *::before, *::after {
@@ -84,6 +88,14 @@ body {
 .cta-button:hover {
     transform: translateY(-3px);
     background-color: #c5821a;
+}
+
+[data-theme="light"] .cta-button {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+[data-theme="light"] .cta-button:hover {
+    background-color: var(--secondary-color);
 }
 
 /* 2. Header & Navigation */
@@ -264,9 +276,13 @@ input:checked + .slider .moon-icon {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(rgba(2, 16, 79, 0.7), rgba(26, 17, 19, 0.8)), url('hero-background.png') no-repeat center center/cover;
+    background: linear-gradient(var(--hero-overlay-start), var(--hero-overlay-end)), url('../assets/img/hero-background.png') no-repeat center center/cover;
     color: #fff;
     padding: 0 20px;
+}
+
+[data-theme="light"] .hero {
+    color: var(--primary-color);
 }
 
 .hero-content h1 {
@@ -307,10 +323,12 @@ input:checked + .slider .moon-icon {
     text-align: center;
     padding: 1.5rem;
 }
-.strength-item img {
+.strength-item svg {
     height: 50px;
+    width: 50px;
     margin-bottom: 1rem;
-    filter: invert(53%) sepia(87%) saturate(1519%) hue-rotate(3deg) brightness(97%) contrast(92%); /* to color #a86b07 */
+    stroke: var(--secondary-color);
+    stroke-width: 1.5;
 }
 .strength-item h3 {
     font-family: var(--font-secondary);
@@ -428,9 +446,12 @@ input:checked + .slider .moon-icon {
     transform: translateY(-5px);
     border-color: var(--accent-color);
 }
-.service-card img {
-    height: 60px;
+.service-card svg {
+    width: 48px;
+    height: 48px;
     margin-bottom: 1rem;
+    stroke: var(--accent-color);
+    stroke-width: 1.5;
 }
 .service-card h3 {
     font-family: var(--font-secondary);

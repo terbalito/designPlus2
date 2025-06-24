@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function switchTheme(e) {
+        // Empêcher le saut de page : on mémorise la position actuelle
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
         if (e.target.checked) {
             document.documentElement.setAttribute('data-theme', 'light');
             localStorage.setItem('theme', 'light');
@@ -24,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.documentElement.setAttribute('data-theme', 'dark');
             localStorage.setItem('theme', 'dark');
         }
+        // Restaurer la position après le reflow potentiel
+        window.scrollTo({ top: currentScroll });
         // Leaflet map needs invalidation after theme change to redraw tiles correctly
         setTimeout(() => {
             if(map) map.invalidateSize();
@@ -31,6 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     themeToggle.addEventListener('change', switchTheme, false);
+
+    // Au cas où le clic se ferait sur le slider ou le label et non sur la checkbox
+    document.querySelector('.theme-switch').addEventListener('click', () => {
+        themeToggle.checked = !themeToggle.checked;
+        const evt = new Event('change');
+        themeToggle.dispatchEvent(evt);
+    });
 
     // --- Mobile Menu ---
     const hamburger = document.getElementById('hamburger-menu');
@@ -107,4 +119,3 @@ document.addEventListener('DOMContentLoaded', () => {
         .bindPopup('<b>Design Plus Entreprise</b><br>123, Avenue des Ambassadeurs, Gombe')
         .openPopup();
 });
-
