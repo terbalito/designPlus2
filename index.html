@@ -1,0 +1,241 @@
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Plus Entreprise - Agence de Communication & Tech</title>
+
+    <!--  Early theme init to avoid flash & ensure reliability  -->
+    <script>
+      (function(){
+        const savedTheme = localStorage.getItem('theme');
+        document.documentElement.setAttribute('data-theme', savedTheme ? savedTheme : 'dark');
+      })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js"
+        }
+      }
+    </script>
+</head>
+<body>
+    <header id="main-header">
+        <nav>
+            <a href="#home" class="logo-link"><img src="logo.png" alt="Logo Design Plus Entreprise" class="logo"></a>
+            <ul class="nav-links">
+                <li><a href="#home">Accueil</a></li>
+                <li><a href="#about">À Propos</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="header-right">
+                 <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="theme-toggle">
+                        <input type="checkbox" id="theme-toggle" />
+                        <div class="slider round">
+                             <span class="sun-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m4.93 19.07 1.41-1.41"></path><path d="m17.66 6.34 1.41-1.41"></path></svg></span>
+                             <span class="moon-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></span>
+                        </div>
+                    </label>
+                </div>
+                <button class="hamburger" id="hamburger-menu" aria-label="Ouvrir le menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Design Plus Entreprise</h1>
+                <p class="slogan">Agence congolaise de communication & tech</p>
+                <a href="#contact" class="cta-button">Demandez un devis</a>
+            </div>
+        </section>
+
+        <section id="strengths">
+            <div class="container">
+                 <div class="strength-item">
+                    <img src="icon-experience.svg" alt="Icône Expérience">
+                    <h3>12 ans d’expérience</h3>
+                    <p>Une expertise multisectorielle à votre service depuis 2013.</p>
+                </div>
+                <div class="strength-item">
+                    <img src="icon-studio.svg" alt="Icône Studio">
+                    <h3>Studio interne & Formation</h3>
+                    <p>Des équipements de pointe et un centre de formation intégré.</p>
+                </div>
+                <div class="strength-item">
+                    <img src="icon-innovation.svg" alt="Icône Innovation">
+                    <h3>Innovation Stratégique</h3>
+                    <p>Des solutions créatives et technologiques pour devancer le futur.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="news" class="container">
+            <h2 class="section-title">Actualités</h2>
+            <div class="news-grid">
+                <article class="news-card">
+                    <img src="news-thumb-1.png" alt="Visuel projet OHADA">
+                    <div class="news-content">
+                        <h3>Refonte pour l'OHADA</h3>
+                        <p>Modernisation de l'identité visuelle et de la plateforme digitale de l'Organisation pour l'Harmonisation en Afrique du Droit des Affaires.</p>
+                        <a href="#" class="read-more">Lire plus</a>
+                    </div>
+                </article>
+                <article class="news-card">
+                    <img src="news-thumb-2.png" alt="Visuel Expo Béton">
+                    <div class="news-content">
+                        <h3>Lancement Expo Béton RDC</h3>
+                        <p>Gestion de la communication et organisation de la première édition du salon international de la construction en RDC.</p>
+                        <a href="#" class="read-more">Lire plus</a>
+                    </div>
+                </article>
+                <article class="news-card">
+                    <img src="news-thumb-3.png" alt="Visuel Knight School 2.0">
+                    <div class="news-content">
+                        <h3>Knight School 2.0</h3>
+                        <p>Notre programme de formation a diplômé sa nouvelle promotion de spécialistes du digital, prêts à innover sur le marché.</p>
+                        <a href="#" class="read-more">Lire plus</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="about" class="container">
+            <h2 class="section-title">À Propos de Nous</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>De 2013 à aujourd'hui : une vision devenue leader.</h3>
+                    <p>Fondée en 2013, Design Plus Entreprise est née de l'ambition de transformer le paysage numérique et communicationnel en République Démocratique du Congo. Notre mission est de fournir des solutions innovantes et sur mesure, alliant créativité, stratégie et technologie de pointe pour propulser nos clients vers le succès.</p>
+                    <blockquote>
+                        "Nous ne nous contentons pas de suivre les tendances, nous les créons. Notre plus grande fierté est de voir nos partenaires grandir grâce à notre collaboration."
+                        <footer>— M. James Moussa, CEO</footer>
+                    </blockquote>
+                </div>
+                <div class="about-image">
+                    <img src="team-photo.png" alt="L'équipe de Design Plus Entreprise">
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="container">
+            <h2 class="section-title">Nos Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="icon-comm.png" alt="Icône Communication Digitale">
+                    <h3>Communication Digitale</h3>
+                    <p>Stratégie social media, marketing de contenu, SEO/SEM.</p>
+                </div>
+                <div class="service-card">
+                    <img src="icon-prod.png" alt="Icône Production Audiovisuelle">
+                    <h3>Production Audiovisuelle</h3>
+                    <p>Films institutionnels, spots publicitaires, reportages, motion design.</p>
+                </div>
+                <div class="service-card">
+                    <img src="icon-dev.png" alt="Icône Développement Web & App">
+                    <h3>Développement Web & App</h3>
+                    <p>Sites web, applications mobiles, solutions e-commerce sur mesure.</p>
+                </div>
+                <div class="service-card">
+                    <img src="icon-design.png" alt="Icône Graphisme">
+                    <h3>Graphisme & Branding</h3>
+                    <p>Identité de marque, chartes graphiques, supports de communication.</p>
+                </div>
+                <div class="service-card">
+                    <img src="icon-event.png" alt="Icône Événementiel">
+                    <h3>Événementiel</h3>
+                    <p>Organisation, gestion et communication pour vos événements.</p>
+                </div>
+                <div class="service-card">
+                    <img src="icon-training.png" alt="Icône Formation">
+                    <h3>Formation Knight School 2.0</h3>
+                    <p>Formations professionnelles aux métiers du digital.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="container">
+            <h2 class="section-title">Notre Portfolio</h2>
+            <div class="portfolio-grid">
+                <figure class="portfolio-item">
+                    <img src="portfolio-arptc.png" alt="Projet ARPTC">
+                    <figcaption>ARPTC - Campagne de sensibilisation</figcaption>
+                </figure>
+                <figure class="portfolio-item">
+                    <img src="portfolio-expo-beton.png" alt="Projet Expo Béton">
+                    <figcaption>Expo Béton - Identité & Événementiel</figcaption>
+                </figure>
+                <figure class="portfolio-item">
+                    <img src="portfolio-ohada.png" alt="Projet OHADA">
+                    <figcaption>OHADA - Plateforme digitale</figcaption>
+                </figure>
+            </div>
+        </section>
+        
+        <section id="contact" class="container">
+             <h2 class="section-title">Contactez-nous</h2>
+             <div class="contact-wrapper">
+                 <div class="contact-form-container">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Nom complet</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Adresse e-mail</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="subject">Sujet</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Votre message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button">Envoyer le message</button>
+                    </form>
+                 </div>
+                 <div class="contact-info">
+                     <h3>Nos Coordonnées</h3>
+                     <p><strong>Adresse :</strong> 123, Avenue des Ambassadeurs, Gombe, Kinshasa, RDC</p>
+                     <p><strong>Téléphone :</strong> +243 81 000 00 00</p>
+                     <p><strong>Email :</strong> contact@designplus.cd</p>
+                     <div class="social-links">
+                        <a href="#" aria-label="Facebook"><img src="icon-facebook.svg" alt="Facebook"></a>
+                        <a href="#" aria-label="Twitter"><img src="icon-twitter.svg" alt="Twitter"></a>
+                        <a href="#" aria-label="LinkedIn"><img src="icon-linkedin.svg" alt="LinkedIn"></a>
+                        <a href="#" aria-label="Instagram"><img src="icon-instagram.svg" alt="Instagram"></a>
+                     </div>
+                     <div id="map"></div>
+                 </div>
+             </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Design Plus Entreprise. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="#">Mentions Légales</a>
+                <a href="#">Politique de confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
