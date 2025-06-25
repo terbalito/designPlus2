@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Design Plus Entreprise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Variables globales */
+        :root {
+            --primary-color: #02104f;
+            --secondary-color: #a86b07;
+            --accent-color: #5ab0e9;
+            --background-dark: #0a0a10;
+            --text-dark: #e0e0e0;
+            --card-dark: #1a1113;
+            
+            --background-light: #f4f4f9;
+            --text-light: #1a1113;
+            --card-light: #ffffff;
+
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+
+            --text-color: var(--text-dark);
+            --background-color: var(--background-dark);
+            --card-bg-color: var(--card-dark);
+            --header-bg-color: rgba(10, 10, 16, 0.8);
+            --hero-overlay-start: rgba(2, 16, 79, 0.7);
+            --hero-overlay-end: rgba(26, 17, 19, 0.8);
+        }
+
+        [data-theme="light"] {
+            --text-color: var(--text-light);
+            --background-color: var(--background-light);
+            --card-bg-color: var(--card-light);
+            --header-bg-color: rgba(255, 255, 255, 0.8);
+            --hero-overlay-start: rgba(255, 255, 255, 0.85);
+            --hero-overlay-end: rgba(244, 244, 249, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+        /* Titres de section */
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        [data-theme="light"] .section-title {
+            color: var(--primary-color);
+        }
+        [data-theme="dark"] .section-title {
+            color: var(--accent-color);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* Boutons */
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: #c5821a;
+        }
+
+        [data-theme="light"] .cta-button {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        [data-theme="light"] .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+        /* En-tête */
+
+
+        /* Header amélioré pour l'image */
+        #main-header.transparent {
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+        
+        #main-header.transparent .nav-links a,
+        #main-header.transparent .logo-link {
+            color: #fff !important;
+        }
+        
+        #main-header.transparent .hamburger span {
+            background: #fff !important;
+        }
+
+        #main-header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            height: 105px;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        } 
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            background: var(--text-color);
+            border-radius: 10px;
+            height: 3px;
+            margin: 4px 0;
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            width: 30px;
+        }
+
+        .hamburger.is-active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-9px, 6px);
+        }
+        .hamburger.is-active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.is-active span:nth-child(3) {
+            transform: rotate(45deg) translate(-8px, -8px);
+        }
+
+        /* Portfolio */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            height: 300px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+        .portfolio-item figcaption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: #fff;
+            padding: 2rem 1.5rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+        .portfolio-item:hover figcaption {
+            transform: translateY(0);
+        }
+
+        /* Section Confiance */
+        .trust-section {
+            background-color: var(--card-bg-color);
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .trust-title {
+            font-family: var(--font-secondary);
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: var(--accent-color);
+            position: relative;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 2.8s ease-out;
+        }
+        
+        .trust-title.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .trust-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        .trust-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .trust-intro {
+            flex: 1;
+            min-width: 300px;
+            padding: 2rem;
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease-out 0.2s;
+        }
+        
+        .trust-intro.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .trust-intro p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .trust-reasons {
+            flex: 1;
+            min-width: 300px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease-out 0.4s;
+        }
+        
+        .trust-reasons.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reasons-title {
+            font-family: var(--font-secondary);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .reason-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .reason-item:hover {
+            transform: translateX(10px);
+            background: rgba(90, 176, 233, 0.1);
+        }
+
+        .reason-icon {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            margin-right: 1rem;
+            min-width: 40px;
+        }
+
+        .reason-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .client-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease-out;
+        }
+        
+        .client-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .client-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(168, 107, 7, 0.2);
+        }
+
+        .client-logo {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .client-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+
+        .client-description {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Background elements */
+        .bg-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .bg-element-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-color);
+            top: -150px;
+            right: -150px;
+        }
+
+        .bg-element-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--secondary-color);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .bg-element-3 {
+            width: 150px;
+            height: 150px;
+            background: var(--primary-color);
+            top: 50%;
+            left: 10%;
+        }
+
+        /* Pied de page */
+        footer {
+            background-color: #000;
+            color: #aaa;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        footer .container {
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            border: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle.transparent {
+            background-color: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .trust-content {
+                flex-direction: column;
+            }
+            
+            .trust-intro, .trust-reasons {
+                min-width: 100%;
+            }
+            
+            .trust-title {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .trust-title {
+                font-size: 2.3rem;
+            }
+            
+            .hamburger {
+                display: flex;
+                z-index: 1001;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: 0;
+                height: calc(100vh - 80px);
+                background-color: var(--background-color);
+                flex-direction: column;
+                width: 70%;
+                max-width: 300px;
+                padding: 2rem;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            
+            .nav-links.active {
+                transform: translateX(0);
+            }
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+            
+            .clients-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .trust-title {
+                font-size: 2rem;
+            }
+            
+            .client-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- En-tête -->
+    <header id="main-header">
+        <nav>
+            <a href="index.html" class="logo-link"><div class="logo">Design Plus Entreprise</div></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="index.html#about">À Propos</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="portfolio.html" class="active">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button id="hamburger-menu" class="hamburger" aria-label="Menu mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Section Portfolio -->
+        <section class="container">
+            <h2 class="section-title">Portfolio Complet</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem;">
+                Découvrez nos réalisations phares qui ont marqué notre parcours depuis 2013. 
+                Chaque projet représente notre engagement pour l'excellence et l'innovation.
+            </p>
+            
+            <div class="portfolio-grid">
+                <figure class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet ARPTC">
+                    <figcaption>ARPTC – Film documentaire sur la transformation digitale</figcaption>
+                </figure>
+                <figure class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet Expo Béton">
+                    <figcaption>Expo Béton – Plateau média & streaming en direct</figcaption>
+                </figure>
+                <figure class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet OHADA">
+                    <figcaption>OHADA / ERSUMA – Couverture conférence & émissions TV</figcaption>
+                </figure>
+                <figure class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet Génie en Herbe">
+                    <figcaption>Génie en Herbe OHADA – Organisation d'un concours éducatif</figcaption>
+                </figure>
+                <figure class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet JFC-RDC">
+                    <figcaption>JFC-RDC – Stratégie de communication digitale</figcaption>
+                </figure>
+                <figure class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet African Account Services">
+                    <figcaption>African Account Services – Design d'identité de marque</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Section Confiance -->
+        <section class="trust-section">
+            <div class="bg-elements">
+                <div class="bg-element bg-element-1"></div>
+                <div class="bg-element bg-element-2"></div>
+                <div class="bg-element bg-element-3"></div>
+            </div>
+            
+            <div class="trust-container">
+                <h2 class="trust-title">Ils nous ont fait confiance</h2>
+                
+                <div class="trust-content">
+                    <div class="trust-intro">
+                        <p>Depuis plus d'une décennie, Design Plus a collaboré avec plusieurs grandes structures, accompagnant leurs ambitions de transformation digitale et de communication stratégique.</p>
+                        <p>Notre expertise multisectorielle nous permet de comprendre les enjeux spécifiques de chaque industrie et d'apporter des solutions sur mesure. De l'ARPTC à l'OHADA, en passant par des entreprises innovantes comme African Account Services, nous avons construit des partenariats durables fondés sur la confiance et l'excellence.</p>
+                        <p>Chaque projet représente une nouvelle opportunité de démontrer notre engagement pour la qualité et notre capacité à transformer les idées en réalisations concrètes.</p>
+                    </div>
+                    
+                    <div class="trust-reasons">
+                        <h3 class="reasons-title">Pourquoi choisir Design Plus ?</h3>
+                        
+                        <div class="reason-item">
+                            <div class="reason-icon"><i class="fas fa-medal"></i></div>
+                            <div class="reason-content">
+                                <h4>Expérience solide</h4>
+                                <p>Plus de 10 ans d'expertise dans des secteurs variés avec des projets complexes menés à bien.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="reason-item">
+                            <div class="reason-icon"><i class="fas fa-users"></i></div>
+                            <div class="reason-content">
+                                <h4>Équipe passionnée</h4>
+                                <p>Une équipe multidisciplinaire, passionnée et à l'écoute de vos besoins spécifiques.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="reason-item">
+                            <div class="reason-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div class="reason-content">
+                                <h4>Solutions innovantes</h4>
+                                <p>Des approches créatives adaptées à vos défis pour des résultats percutants.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="reason-item">
+                            <div class="reason-icon"><i class="fas fa-star"></i></div>
+                            <div class="reason-content">
+                                <h4>Engagement qualité</h4>
+                                <p>Un engagement permanent pour l'excellence, la qualité et la performance.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="clients-grid">
+                    <div class="client-card">
+                        <div class="client-logo"><i class="fas fa-tower-cell"></i></div>
+                        <h3 class="client-name">ARPTC</h3>
+                        <p class="client-description">Autorité de Régulation</p>
+                    </div>
+                    
+                    <div class="client-card">
+                        <div class="client-logo"><i class="fas fa-building"></i></div>
+                        <h3 class="client-name">Expo Béton</h3>
+                        <p class="client-description">Salon international</p>
+                    </div>
+                    
+                    <div class="client-card">
+                        <div class="client-logo"><i class="fas fa-gavel"></i></div>
+                        <h3 class="client-name">ERSUMA (OHADA)</h3>
+                        <p class="client-description">École Régionale</p>
+                    </div>
+                    
+                    <div class="client-card">
+                        <div class="client-logo"><i class="fas fa-brain"></i></div>
+                        <h3 class="client-name">Génie en Herbe OHADA</h3>
+                        <p class="client-description">Concours éducatif</p>
+                    </div>
+                    
+                    <div class="client-card">
+                        <div class="client-logo"><i class="fas fa-hands-helping"></i></div>
+                        <h3 class="client-name">JFC-RDC</h3>
+                        <p class="client-description">Organisation jeunesse</p>
+                    </div>
+                    
+                    <div class="client-card">
+                        <div class="client-logo"><i class="fas fa-calculator"></i></div>
+                        <h3 class="client-name">African Account Services</h3>
+                        <p class="client-description">Services financiers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Design Plus Entreprise. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="#">Mentions Légales</a>
+                <a href="#">Politique de confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+    <button id="theme-toggle" class="theme-toggle" aria-label="Changer le thème">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Menu mobile
+            const hamburger = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    hamburger.classList.toggle('is-active');
+                });
+                
+                // Fermer le menu au clic sur un lien
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        hamburger.classList.remove('is-active');
+                    });
+                });
+            }
+            
+            // Navigation active
+            const currentPage = window.location.pathname.split('/').pop();
+            const navAnchors = document.querySelectorAll('#main-header nav .nav-links li a');
+            
+            navAnchors.forEach(a => {
+                if (a.getAttribute('href') === currentPage) {
+                    a.classList.add('active');
+                }
+            });
+            
+            // Basculer le thème
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+                
+                // Sauvegarder la préférence
+                localStorage.setItem('theme', newTheme);
+            });
+            
+            // Charger le thème sauvegardé
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            }
+            
+            // Animations de défilement
+            const animatedElements = document.querySelectorAll('.trust-title, .trust-intro, .trust-reasons, .client-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+            
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Détecter le défilement pour le header
+            const header = document.getElementById('main-header');
+            let lastScroll = 0;
+            
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.scrollY;
+                
+                // Ajouter/supprimer la classe transparent selon la position
+                if (currentScroll > 100) {
+                    header.classList.remove('transparent');
+                    themeToggle.classList.remove('transparent');
+                } else {
+                    header.classList.add('transparent');
+                    themeToggle.classList.add('transparent');
+                }
+                
+                // Animation pour le titre principal
+                const trustTitle = document.querySelector('.trust-title');
+                if (trustTitle && currentScroll > trustTitle.offsetTop - window.innerHeight + 200) {
+                    trustTitle.classList.add('visible');
+                }
+                
+                lastScroll = currentScroll;
+            });
+            
+            // Initialisation du scroll au chargement
+            window.addEventListener('load', () => {
+                if (window.scrollY > 100) {
+                    header.classList.remove('transparent');
+                    themeToggle.classList.remove('transparent');
+                } else {
+                    header.classList.add('transparent');
+                    themeToggle.classList.add('transparent');
+                }
+            });
+        });
+    </script>
+    <script src="common.js"></script>
+</body>
+</html>

@@ -1,174 +1,960 @@
+<!DOCTYPE html>
 <html lang="fr" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Design Plus Entreprise - Agence de Communication & Tech</title>
-
-    <!--  Early theme init to avoid flash & ensure reliability  -->
-    
-
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://cdn.emailjs.com/sdk/3.11/email.min.js"></script>
-    <script type="importmap">
-      {
-        "imports": {
-          "leaflet": "https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.esm.js"
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Variables globales */
+        :root {
+            --primary-color: #02104f;
+            --secondary-color: #a86b07;
+            --accent-color: #5ab0e9;
+            --background-dark: #0a0a10;
+            --text-dark: #e0e0e0;
+            --card-dark: #1a1113;
+            
+            --background-light: #f4f4f9;
+            --text-light: #1a1113;
+            --card-light: #ffffff;
+
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+
+            --text-color: var(--text-dark);
+            --background-color: var(--background-dark);
+            --card-bg-color: var(--card-dark);
+            --header-bg-color: rgba(10, 10, 16, 0.8);
+            --hero-overlay-start: rgba(2, 16, 79, 0.7);
+            --hero-overlay-end: rgba(26, 17, 19, 0.8);
         }
-      }
-    </script>
+
+        [data-theme="light"] {
+            --text-color: var(--text-light);
+            --background-color: var(--background-light);
+            --card-bg-color: var(--card-light);
+            --header-bg-color: rgba(255, 255, 255, 0.8);
+            --hero-overlay-start: rgba(255, 255, 255, 0.85);
+            --hero-overlay-end: rgba(244, 244, 249, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+        /* Titres de section */
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        [data-theme="light"] .section-title {
+            color: var(--primary-color);
+        }
+        [data-theme="dark"] .section-title {
+            color: var(--accent-color);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* Boutons */
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: #c5821a;
+        }
+
+        [data-theme="light"] .cta-button {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        [data-theme="light"] .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+
+
+        /* Header amélioré pour l'image */
+        #main-header.transparent {
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+        
+        #main-header.transparent .nav-links a,
+        #main-header.transparent .logo-link {
+            color: #fff !important;
+        }
+        
+        #main-header.transparent .hamburger span {
+            background: #fff !important;
+        }
+
+        #main-header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            height: 105px;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        } 
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            background: var(--text-color);
+            border-radius: 10px;
+            height: 3px;
+            margin: 4px 0;
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            width: 30px;
+        }
+
+        .hamburger.is-active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-9px, 6px);
+        }
+        .hamburger.is-active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.is-active span:nth-child(3) {
+            transform: rotate(45deg) translate(-8px, -8px);
+        }
+
+        /* Section Hero */
+        .hero {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(var(--hero-overlay-start), var(--hero-overlay-end)), 
+                        url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: #fff;
+            padding: 0 20px;
+        }
+
+        [data-theme="light"] .hero {
+            color: var(--primary-color);
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-secondary);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-content .slogan {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            animation: fadeInUp 1s ease-out 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .hero-buttons {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Points forts */
+        #strengths {
+            background-color: var(--card-bg-color);
+            padding: 3rem 0;
+        }
+        #strengths .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0;
+        }
+        .strength-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        .strength-item svg {
+            height: 50px;
+            width: 50px;
+            margin-bottom: 1rem;
+            stroke: var(--secondary-color);
+            stroke-width: 1.5;
+        }
+        .strength-item h3 {
+            font-family: var(--font-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            color: var(--text-color);
+        }
+
+        /* Actualités */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background-color: var(--card-bg-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(168, 107, 7, 0.2);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-content h3 {
+            font-family: var(--font-secondary);
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .news-content p {
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+
+        /* À propos */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .about-image img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text h3 {
+            font-family: var(--font-secondary);
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text blockquote {
+            margin-top: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 4px solid var(--secondary-color);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .about-text blockquote footer {
+            margin-top: 0.5rem;
+            font-style: normal;
+            font-weight: 600;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: var(--card-bg-color);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+        .service-card svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            stroke: var(--accent-color);
+            stroke-width: 1.5;
+        }
+        .service-card h3 {
+            font-family: var(--font-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+        [data-theme="dark"] .service-card h3 { color: var(--accent-color); }
+
+        /* Portfolio */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            height: 300px;
+        }
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+        .portfolio-item figcaption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: #fff;
+            padding: 2rem 1.5rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+        .portfolio-item:hover figcaption {
+            transform: translateY(0);
+        }
+
+        /* Offres phares */
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .offer-card {
+            background-color: var(--card-bg-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid rgba(90, 176, 233, 0.3);
+        }
+
+        .offer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(90, 176, 233, 0.2);
+        }
+
+        .offer-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Équipe & Partenaires */
+        .partners-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .partner-card {
+            width: 150px;
+            height: 150px;
+            background-color: var(--card-bg-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            transition: transform 0.3s;
+        }
+        .partner-card:hover {
+            transform: translateY(-5px);
+        }
+        .partner-logo {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        .partner-card p {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Contact */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background-color: var(--card-bg-color);
+            padding: 3rem;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: var(--font-primary);
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        #contact-form button {
+            width: 100%;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .contact-info h3 {
+            font-family: var(--font-secondary);
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .contact-info p {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .contact-info i {
+            margin-right: 10px;
+            color: var(--accent-color);
+            width: 20px;
+        }
+
+        .social-links {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--background-color);
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+        #map {
+            height: 250px;
+            width: 100%;
+            border-radius: 8px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Pied de page */
+        footer {
+            background-color: #000;
+            color: #aaa;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        footer .container {
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            border: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle.transparent {
+            background-color: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        /* Effets fade-in pour les sections */
+        .fade-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.6s ease-out, transform 2.6s ease-out;
+        }
+        
+        .fade-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about-content, .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hamburger {
+                display: flex;
+                z-index: 1001;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: 0;
+                height: calc(100vh - 80px);
+                background-color: var(--background-color);
+                flex-direction: column;
+                width: 70%;
+                max-width: 300px;
+                padding: 2rem;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            
+            .nav-links.active {
+                transform: translateX(0);
+            }
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .partner-card {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 0;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .strength-item, .service-card, .offer-card {
+                padding: 1rem;
+            }
+            
+            .contact-wrapper {
+                padding: 1.5rem;
+            }
+            
+            footer .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- En-tête -->
     <header id="main-header">
         <nav>
-            <a href="#home" class="logo-link"><img src="./assets/img/logo.png" alt="Logo Design Plus Entreprise" class="logo"></a>
+            <a href="index.html" class="logo-link"><div class="logo">Design Plus Entreprise</div></a>
             <ul class="nav-links">
-                <li><a href="#home">Accueil</a></li>
-                <li><a href="#about">À Propos</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="index.html#about">À Propos</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="portfolio.html" class="active">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
             </ul>
-            <button id="hamburger-menu" class="hamburger" aria-label="Menu mobile"><span></span><span></span><span></span></button>
+            <button id="hamburger-menu" class="hamburger" aria-label="Menu mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
     <main>
+        <!-- Section Hero -->
         <section id="home" class="hero">
             <div class="hero-content">
                 <h1>Design Plus Entreprise</h1>
                 <p class="slogan">Agence congolaise de communication, production & tech – depuis 2013</p>
-                <a href="#contact" class="cta-button primary">Demander un devis</a>
+                <div class="hero-buttons">
+                    <a href="#contact" class="cta-button primary">Demander un devis</a>
                     <a href="#contact" class="cta-button secondary">Nous contacter</a>
+                </div>
             </div>
         </section>
 
-        <section id="strengths">
+        <!-- Points forts -->
+        <section id="strengths" class="fade-section">
             <div class="container">
                  <div class="strength-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 17 17 23 15.79 13.88"></polyline></svg>
-                    <h3>12 ans d’expérience</h3>
+                    <i class="fas fa-award fa-2x"></i>
+                    <h3>12 ans d'expérience</h3>
                     <p>Une expertise multisectorielle à votre service depuis 2013.</p>
                 </div>
                 <div class="strength-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-camera"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                    <h3>Studio interne photo & vidéo haute définition</h3>
+                    <i class="fas fa-video fa-2x"></i>
+                    <h3>Studio interne photo & vidéo</h3>
                     <p>Équipements haut de gamme pour vos projets photo et vidéo.</p>
                 </div>
                 <div class="strength-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-cpu"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                    <i class="fas fa-sync-alt fa-2x"></i>
                     <h3>Solutions 360°</h3>
                     <p>Stratégie, création, technologie et événementiel sans couture.</p>
                 </div>
             </div>
         </section>
 
-        <section id="news" class="container">
+        <!-- Actualités -->
+        <section id="news" class="container fade-section">
             <h2 class="section-title">Actualités</h2>
             <div class="news-grid">
                 <article class="news-card">
-                    <img src="./assets/img/news-thumb-1.png" alt="Visuel projet OHADA">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Visuel projet OHADA">
                     <div class="news-content">
                         <h3>Refonte pour l'OHADA</h3>
                         <p>Modernisation de l'identité visuelle et de la plateforme digitale de l'Organisation pour l'Harmonisation en Afrique du Droit des Affaires.</p>
                         <a href="#" class="read-more">Lire plus</a>
-   
+                    </div>
                 </article>
                 <article class="news-card">
-                    <img src="./assets/img/news-thumb-2.png" alt="Visuel Expo Béton">
+                    <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Visuel Expo Béton">
                     <div class="news-content">
                         <h3>Lancement Expo Béton RDC</h3>
                         <p>Gestion de la communication et organisation de la première édition du salon international de la construction en RDC.</p>
                         <a href="#" class="read-more">Lire plus</a>
-   
+                    </div>
                 </article>
                 <article class="news-card">
-                    <img src="./assets/img/news-thumb-3.png" alt="Visuel Knight School 2.0">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Visuel Knight School 2.0">
                     <div class="news-content">
                         <h3>Knight School 2.0</h3>
                         <p>Notre programme de formation a diplômé sa nouvelle promotion de spécialistes du digital, prêts à innover sur le marché.</p>
                         <a href="#" class="read-more">Lire plus</a>
-   
+                    </div>
                 </article>
             </div>
         </section>
 
-        <section id="about" class="container">
+        <!-- À propos -->
+        <section id="about" class="container fade-section">
             <h2 class="section-title">À Propos de Nous</h2>
             <div class="about-content">
                 <div class="about-text">
                     <h3>De 2013 à aujourd'hui : une vision devenue leader.</h3>
-                    <p>Fondée à Kinshasa en 2013 par M. James Moussa, Design Plus Entreprise accompagne institutions, marques et entrepreneurs à travers des solutions créatives et innovantes. De notre premier logiciel scolaire à la couverture médiatique d’événements majeurs, notre histoire est celle d’une résilience : de l’informel à l’impact.</p>
+                    <p>Fondée à Kinshasa en 2013 par M. James Moussa, Design Plus Entreprise accompagne institutions, marques et entrepreneurs à travers des solutions créatives et innovantes. De notre premier logiciel scolaire à la couverture médiatique d'événements majeurs, notre histoire est celle d'une résilience : de l'informel à l'impact.</p>
                     <blockquote>
                         « Transformer les idées en projets concrets et percutants. »
                         <footer>— J. Moussa</footer>
                     </blockquote>
                 </div>
                 <div class="about-image">
-                    <img src="./assets/img/team-photo.png" alt="L'équipe de Design Plus Entreprise">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="L'équipe de Design Plus Entreprise">
                 </div>
             </div>
         </section>
 
-        <section id="services" class="container">
+        <!-- Services -->
+        <section id="services" class="container fade-section">
             <h2 class="section-title">Nos Services</h2>
             <div class="services-grid">
                 <div class="service-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                    <i class="fas fa-bullhorn fa-2x"></i>
                     <h3>Communication 360°</h3>
                     <p>Stratégie, campagnes, community management.</p>
                 </div>
                 <div class="service-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-film"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+                    <i class="fas fa-film fa-2x"></i>
                     <h3>Production audiovisuelle</h3>
                     <p>Films institutionnels, streaming live, podcasts.</p>
                 </div>
                 <div class="service-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-code"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    <i class="fas fa-code fa-2x"></i>
                     <h3>Développement digital</h3>
                     <p>Sites web & apps sécurisés, SEO/SEA.</p>
                 </div>
                 <div class="service-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pen-tool"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                    <i class="fas fa-paint-brush fa-2x"></i>
                     <h3>Design graphique & motion</h3>
                     <p>Logos, charte, animations.</p>
                 </div>
                 <div class="service-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <i class="fas fa-calendar-alt fa-2x"></i>
                     <h3>Événementiel clé-en-main</h3>
                     <p>Conception, logistique, branding sur site.</p>
                 </div>
                 <div class="service-card">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                    <i class="fas fa-book-open fa-2x"></i>
                     <h3>Formation & consulting</h3>
                     <p>Knight School 2.0, coaching et ateliers sur-mesure.</p>
                 </div>
             </div>
         </section>
 
-        <section id="portfolio" class="container">
+        <!-- Portfolio -->
+        <section id="portfolio" class="container fade-section">
             <h2 class="section-title">Notre Portfolio</h2>
             <div class="portfolio-grid">
+                
                 <figure class="portfolio-item">
-                    <img src="./assets/img/portfolio-arptc.png" alt="Projet ARPTC">
+                    <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet ARPTC">
                     <figcaption>ARPTC – Film documentaire sur la transformation digitale</figcaption>
                 </figure>
                 <figure class="portfolio-item">
-                    <img src="./assets/img/portfolio-expo-beton.png" alt="Projet Expo Béton">
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet Expo Béton">
                     <figcaption>Expo Béton – Plateau média & streaming en direct</figcaption>
                 </figure>
                 <figure class="portfolio-item">
-                    <img src="./assets/img/portfolio-ohada.png" alt="Projet OHADA">
+                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet OHADA">
                     <figcaption>OHADA / ERSUMA – Couverture conférence & émissions TV</figcaption>
                 </figure>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="portfolio.html" class="cta-button">Voir notre portfolio complet</a>
             </div>
         </section>
 
         <!-- Offres phares -->
-        <section id="offers" class="container">
+        <section id="offers" class="container fade-section">
             <h2 class="section-title">Nos Offres Phare</h2>
             <div class="offers-grid">
                 <div class="offer-card">
@@ -181,7 +967,7 @@
                 </div>
                 <div class="offer-card">
                     <h3>TalkLoy</h3>
-                    <p>Plateforme d’échange professionnel et mentoring.</p>
+                    <p>Plateforme d'échange professionnel et mentoring.</p>
                 </div>
                 <div class="offer-card">
                     <h3>Packs PME</h3>
@@ -191,22 +977,36 @@
         </section>
 
         <!-- Équipe & Partenaires -->
-        <section id="team" class="container">
-            <h2 class="section-title">Notre Équipe</h2>
+        <section id="team" class="container fade-section">
+            <h2 class="section-title">Nos Partenaires</h2>
             <div class="team-wrapper">
-                
                 <div class="partners-logos">
-                    <div class="partner-card"><img src="./assets/img/partner.png" alt="Orange RDC"><p>Orange RDC</p></div>
-                    <div class="partner-card"><img src="./assets/img/partner.png" alt="Bracongo"><p>Bracongo</p></div>
-                    <div class="partner-card"><img src="./assets/img/partner.png" alt="ONU Femmes"><p>ONU Femmes</p></div>
-                    
-                    
-                    
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-building"></i></div>
+                        <p>Orange RDC</p>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-industry"></i></div>
+                        <p>Bracongo</p>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-globe-africa"></i></div>
+                        <p>ONU Femmes</p>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-university"></i></div>
+                        <p>OHADA</p>
+                    </div>
+                    <div class="partner-card">
+                        <div class="partner-logo"><i class="fas fa-hotel"></i></div>
+                        <p>Pullman Kinshasa</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="container">
+        <!-- Contact -->
+        <section id="contact" class="container fade-section">
             <h2 class="section-title">Contactez-nous</h2>
             <div class="contact-wrapper">
                 <div class="contact-form-container">
@@ -233,18 +1033,20 @@
         
                 <div class="contact-info">
                     <h3>Nos Coordonnées</h3>
-                    <p><strong>Adresse :</strong> 01, avenue Dumi, Gombe – Kinshasa, RDC</p>
-                    <p><strong>Téléphone :</strong> +243 81 783 8035</p>
-                    <p><strong>Email :</strong> contact@designplus.cd</p>
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>Adresse :</strong> 01, avenue Dumi, Gombe – Kinshasa, RDC</p>
+                    <p><i class="fas fa-phone"></i> <strong>Téléphone :</strong> +243 81 783 8035</p>
+                    <p><i class="fas fa-envelope"></i> <strong>Email :</strong> contact@designplus.cd</p>
         
                     <div class="social-links">
-                        <a href="#" aria-label="Facebook"><img src="icon-facebook.svg" alt="Facebook"></a>
-                        <a href="#" aria-label="Twitter"><img src="icon-twitter.svg" alt="Twitter"></a>
-                        <a href="#" aria-label="LinkedIn"><img src="icon-linkedin.svg" alt="LinkedIn"></a>
-                        <a href="#" aria-label="Instagram"><img src="icon-instagram.svg" alt="Instagram"></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
         
-                    <div id="map"></div>
+                    <div id="map">
+                        <p><i class="fas fa-map-marked-alt"></i> Localisation sur Google Maps</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -260,6 +1062,148 @@
         </div>
     </footer>
 
-    <script type="module" src="./js/script.js"></script>
+    <button id="theme-toggle" class="theme-toggle transparent" aria-label="Changer le thème">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Menu mobile
+            const hamburger = document.getElementById('hamburger-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    hamburger.classList.toggle('is-active');
+                });
+                
+                // Fermer le menu au clic sur un lien
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        hamburger.classList.remove('is-active');
+                    });
+                });
+            }
+            
+            // Navigation active au défilement
+            const sections = document.querySelectorAll('main section');
+            const navAnchors = document.querySelectorAll('#main-header nav .nav-links li a');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (pageYOffset >= sectionTop - sectionHeight / 3) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navAnchors.forEach(a => {
+                    a.classList.remove('active');
+                    if (a.getAttribute('href').includes(current)) {
+                        a.classList.add('active');
+                    }
+                });
+            });
+            
+            // Basculer le thème
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+                
+                // Sauvegarder la préférence
+                localStorage.setItem('theme', newTheme);
+            });
+            
+            // Charger le thème sauvegardé
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+            }
+            
+            // Gestion du formulaire
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    // Simulation d'envoi
+                    setTimeout(() => {
+                        alert('Merci pour votre message ! Nous vous contacterons très rapidement.');
+                        contactForm.reset();
+                    }, 500);
+                });
+            }
+            
+            // Gestion du header transparent sur l'image
+            const header = document.getElementById('main-header');
+            const heroSection = document.getElementById('home');
+            
+            // Observer pour le header
+            const headerObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        header.classList.remove('transparent');
+                        themeToggle.classList.remove('transparent');
+                    } else {
+                        header.classList.add('transparent');
+                        themeToggle.classList.add('transparent');
+                    }
+                });
+            }, {
+                threshold: 0.1, // lorsque 10% de la section hero est visible
+            });
+            
+            if (heroSection) {
+                headerObserver.observe(heroSection);
+            }
+            
+            // Observer pour les animations de fade-in
+            const fadeSections = document.querySelectorAll('.fade-section');
+            
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optionnel: arrêter d'observer une fois visible
+                        // sectionObserver.unobserve(entry.target);
+                    } else {
+                        // Optionnel: enlever l'animation si on remonte
+                        // entry.target.classList.remove('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+            });
+            
+            fadeSections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+            
+            // Initialisation du scroll au chargement
+            window.addEventListener('load', () => {
+                if (window.scrollY > heroSection.offsetHeight * 0.9) {
+                    header.classList.remove('transparent');
+                    themeToggle.classList.remove('transparent');
+                } else {
+                    header.classList.add('transparent');
+                    themeToggle.classList.add('transparent');
+                }
+            });
+        });
+    </script>
+    <script src="common.js"></script>
 </body>
 </html>

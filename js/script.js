@@ -2,6 +2,8 @@ import leaflet from 'leaflet';
 
 // Script principal Design Plus – menu mobile, navigation active, formulaire et carte
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialisation EmailJS (remplacez par votre clé publique)
+  emailjs.init('YOUR_PUBLIC_KEY');
   /* ---------- MENU MOBILE ---------- */
   const hamburger = document.getElementById('hamburger-menu');
   const navLinks  = document.querySelector('.nav-links');
@@ -36,8 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
   if (form) {
     form.addEventListener('submit', e => {
       e.preventDefault();
-      alert('Merci pour votre message ! Nous vous répondrons bientôt.');
-      form.reset();
+      const serviceId  = 'YOUR_SERVICE_ID';
+      const templateId = 'YOUR_TEMPLATE_ID';
+      const templateParams = {
+        from_name: form.name.value,
+        from_email: form.email.value,
+        subject: form.subject.value,
+        message: form.message.value
+      };
+      emailjs.send(serviceId, templateId, templateParams)
+        .then(() => {
+          alert('Votre message a bien été envoyé, merci !');
+          form.reset(); 
+        })
+        .catch(() => alert('Erreur lors de l\'envoi, veuillez réessayer plus tard.'));
     });
   }
 
