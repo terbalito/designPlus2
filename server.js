@@ -4,9 +4,9 @@
 
 console.log('🟢 [START] server.js démarre');
 
-const express = require('express');
-const nodemailer = require('nodemailer');
-const cors = require('cors');
+import express from 'express';
+import nodemailer from 'nodemailer';
+import cors from 'cors';
 
 // Création de l'app Express
 const app = express();

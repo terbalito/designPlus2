@@ -387,6 +387,19 @@ body.menu-open {
             object-fit: cover;
         }
 
+        /* Rendre la carte entière cliquable sans casser le style */
+        .card-link {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+            height: 100%;
+        }
+        .card-link:hover .news-card {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(168, 107, 7, 0.2);
+        }
+
+
         .news-content {
             padding: 1.5rem;
             flex-grow: 1;
@@ -404,6 +417,43 @@ body.menu-open {
             flex-grow: 1;
             margin-bottom: 1rem;
         }
+
+        /* Extrait avec « lire la suite » */
+        .news-content p.truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;      /* nombre de lignes souhaitées */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Galerie de la page détail */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .gallery img {
+            width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        /* Vidéo responsive */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* ratio 16:9 */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top:0; left:0;
+            width:100%; height:100%;
+            border: none;
+        }
+
 
         .read-more {
             color: var(--secondary-color);
@@ -862,6 +912,7 @@ body.menu-open {
             </a>
             <ul class="nav-links">
                 <li><a href="index.html">Accueil</a></li>
+                <li><a href="actualite.html">Actualité</a></li>
                 <li><a href="index.html#about">À Propos</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="portfolio.html" class="active">Portfolio</a></li>
@@ -913,28 +964,83 @@ body.menu-open {
             <h2 class="section-title title-animate">Actualités</h2>
             <div class="news-grid">
                 <article class="news-card">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Visuel projet OHADA">
+                <a href="ohada.html" class="card-link">
+                    <img src="./assets/img/ohada.jpg" alt="Visuel projet OHADA">
                     <div class="news-content">
-                        <h3>Refonte pour l'OHADA</h3>
-                        <p>Modernisation de l'identité visuelle et de la plateforme digitale de l'Organisation pour l'Harmonisation en Afrique du Droit des Affaires.</p>
-                        <a href="#" class="read-more">Lire plus</a>
+                    <h3>Design Plus Entreprise au cœur du 14e Concours Génie en Herbe OHADA à Kinshasa</h3>
+                    <p class="truncate">
+                        Du professionnalisme, de la créativité et de l’engagement : c’est avec ces valeurs que Design Plus Entreprise a eu l’honneur d’accompagner la 14e édition du Concours Génie en Herbe OHADA, organisée cette année à Kinshasa, en République Démocratique du Congo. Un événement panafricain, une jeunesse engagée, mettant à l’honneur l’intelligence juridique, la rigueur académique et l’esprit d’équipe autour du droit des affaires en Afrique.
+                    </p>
+                    <span class="read-more">Lire la suite →</span>
                     </div>
+                </a>
                 </article>
+
                 <article class="news-card">
-                    <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Visuel Expo Béton">
+                    <a href="ohada.html" class="card-link">
+                    <img src="./assets/img/beton.jpg" alt="Visuel Expo Béton">
                     <div class="news-content">
-                        <h3>Lancement Expo Béton RDC</h3>
-                        <p>Gestion de la communication et organisation de la première édition du salon international de la construction en RDC.</p>
-                        <a href="#" class="read-more">Lire plus</a>
+                        <h3>Design Plus Entreprise accompagne la 8e Expo Béton au Centre Financier de Kinshasa</h3>
+                         <p class="truncate">Toujours au service de l’excellence et de l’innovation, Design Plus Entreprise a eu le plaisir de contribuer au succès de la 8e édition de l’Expo Béton, l’un des événements majeurs du secteur de la construction, de l’urbanisme et des infrastructures en République Démocratique du Congo, tenue au Centre Financier de Kinshasa.
+
+    Un savoir-faire au service de la visibilité
+    À cette occasion, notre équipe a été mobilisée pour accompagner les exposants et partenaires dans :
+
+    L’impression professionnelle de supports de communication (bâches, affiches, kakemonos, flyers, etc.)
+
+    Le branding et l’habillage des stands, avec une attention particulière à la cohérence visuelle et à l’impact graphique
+
+    Nous avons apporté des solutions sur mesure, conçues pour mettre en valeur l’identité de chaque marque et garantir une présence remarquée lors de ce rendez-vous stratégique.
+
+    Une expertise transversale au service des événements
+    Fidèles à notre engagement depuis 2013, nous mettons à disposition notre savoir-faire pour accompagner les acteurs économiques dans :
+
+    La communication visuelle et l'impression
+
+    Le branding événementiel
+
+    La production audiovisuelle
+
+    Le marketing digital et les technologies
+
+    L’organisation d’événements clé en main
+
+    Notre mission : offrir des solutions innovantes, créatives et orientées résultats, quel que soit le secteur.
+
+    🏗️ Merci aux organisateurs de l’Expo Béton 08 pour leur confiance, et bravo à tous les participants pour leur contribution à la construction d’un avenir urbain durable et ambitieux.
+    📲 Suivez Design Plus Entreprise pour découvrir d’autres projets et collaborations d’envergure.</p>
+                    <span class="read-more">Lire la suite →</span>
                     </div>
+                </a>
                 </article>
+
                 <article class="news-card">
-                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Visuel Knight School 2.0">
+                    <a href="ohada.html" class="card-link">
+                    <img src="./assets/img/team-Design-plus-entreprise.jpeg" alt="Visuel Knight School 2.0">
                     <div class="news-content">
-                        <h3>Knight School 2.0</h3>
-                        <p>Notre programme de formation a diplômé sa nouvelle promotion de spécialistes du digital, prêts à innover sur le marché.</p>
-                        <a href="#" class="read-more">Lire plus</a>
+                        <h3>Design Plus Entreprise et Cuso International : Un partenariat pour l’intégration professionnelle des jeunes en RDC</h3>
+                        <p class="truncate">Chez Design Plus Entreprise, nous croyons fermement que l’avenir de notre pays repose sur la jeunesse. C’est pourquoi nous sommes fiers d’annoncer notre partenariat avec Cuso International, une organisation canadienne engagée pour le développement humain et l’inclusion sociale, dans le cadre d’un programme visant à favoriser l’intégration professionnelle des jeunes en République Démocratique du Congo.
+
+Un engagement commun pour l’avenir
+Ce partenariat s’inscrit dans une dynamique d’encadrement, d’apprentissage et de stage professionnel au sein de notre agence. L’objectif est clair : offrir aux jeunes talents l’opportunité de se former dans un environnement professionnel réel, tout en développant les compétences essentielles à leur insertion dans le monde du travail.
+
+Ce que nous mettons en place :
+Accueil et encadrement de jeunes stagiaires, issus de divers parcours
+
+Formation pratique et mentorat dans nos pôles : audiovisuel, communication, marketing digital, design graphique, événementiel et informatique
+
+Suivi personnalisé, afin de favoriser une montée en compétences concrète et mesurable
+
+Intégration dans des projets réels, pour valoriser l’expérience terrain
+
+Un partenariat porteur de sens
+En collaboration avec Cuso International, nous contribuons à une vision partagée : celle d’une jeunesse autonome, qualifiée et actrice du développement de son pays. Cette initiative rejoint notre mission depuis 2013, qui est d’accompagner les porteurs de projets avec des solutions innovantes, personnalisées et orientées vers l’impact.
+
+🤝 Chez Design Plus Entreprise, nous ne formons pas seulement des professionnels. Nous formons des bâtisseurs d’avenir.
+📲 Restez connectés pour découvrir les témoignages, portraits et réussites issus de ce partenariat.</p>
+                <span class="read-more">Lire la suite →</span>
                     </div>
+                </a>
                 </article>
             </div>
         </section>
@@ -1157,6 +1263,8 @@ body.menu-open {
 <script>
 document.getElementById('contact-form').addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  const API_BASE = 'http://localhost:3000';
   
   const data = {
     name:    e.target.name.value.trim(),
@@ -1166,7 +1274,7 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
   };
 
   try {
-    const resp = await fetch('https://ton-domaine.com/api/contact', {
+    const resp = await fetch(`${API_BASE}/api/contact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
