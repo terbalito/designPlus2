@@ -1,11 +1,942 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Actualités - Design Plus Entreprise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables globales */
+        :root {
+            --primary-color: #02104f;
+            --secondary-color: #a86b07;
+            --accent-color: #5ab0e9;
+            --background-dark: #0a0a10;
+            --text-dark: #e0e0e0;
+            --card-dark: #1a1113;
+            
+            --background-light: #f4f4f9;
+            --text-light: #1a1113;
+            --card-light: #ffffff;
+
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+
+            --text-color: var(--text-dark);
+            --background-color: var(--background-dark);
+            --card-bg-color: var(--card-dark);
+            --header-bg-color: rgba(10, 10, 16, 0.8);
+            --hero-overlay-start: rgba(2, 16, 79, 0.7);
+            --hero-overlay-end: rgba(26, 17, 19, 0.8);
+        }
+
+        [data-theme="light"] {
+            --text-color: var(--text-light);
+            --background-color: var(--background-light);
+            --card-bg-color: var(--card-light);
+            --header-bg-color: rgba(255, 255, 255, 0.8);
+            --hero-overlay-start: rgba(255, 255, 255, 0.85);
+            --hero-overlay-end: rgba(244, 244, 249, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Empêche le défilement du corps lorsque le menu est ouvert */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+         /* Header amélioré pour l'image */
+        #main-header.transparent {
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+        
+        #main-header.transparent .nav-links a,
+        #main-header.transparent .logo-link {
+            color: #fff !important;
+        }
+        
+        #main-header.transparent .hamburger span {
+            background: #fff !important;
+        }
+
+        #main-header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        }
+
+        /* Ajuste la taille de ton logo ici */
+        .logo-img {
+        height: 90px;      /* ou la hauteur que tu veux */
+        width: auto;       /* pour garder les proportions */
+        object-fit: contain;
+        }
+
+        /* Si tu veux garder le texte à côté de l’image, remplace .logo-img par : */
+        .logo {
+        display: flex;
+        align-items: center;
+        }
+        .logo-img {
+        height: 90px;
+        margin-right: 0.5rem;
+        }
+
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+
+            position: relative;
+            z-index: 1001; /* Doit être au-dessus du menu */
+        }
+
+
+        .hamburger span {
+            background: var(--text-color);
+            border-radius: 10px;
+            height: 3px;
+            margin: 4px 0;
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            width: 30px;
+        }
+
+        .hamburger.is-active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-9px, 6px);
+        }
+        .hamburger.is-active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.is-active span:nth-child(3) {
+            transform: rotate(45deg) translate(-8px, -8px);
+        }
+
+        /* Animation initiale : invisible et décalé à droite */
+        .title-animate {
+            opacity: 0;
+            transform: translateX(100px);
+            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+
+        /* Quand on ajoute la classe .visible, on revient à sa place */
+        .title-animate.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Animation initiale : invisible et décalé vers le bas */
+        .section-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: transform 1.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        opacity 1.7s ease-out;
+        }
+
+        /* Quand on ajoute .visible, on revient à sa place */
+        .section-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Titres de section */
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        [data-theme="light"] .section-title {
+            color: var(--primary-color);
+        }
+        [data-theme="dark"] .section-title {
+            color: var(--accent-color);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* Boutons */
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: #c5821a;
+        }
+
+        [data-theme="light"] .cta-button {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        [data-theme="light"] .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+        /* Vidéo responsive */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* ratio 16:9 */
+            height: 0;
+            overflow: hidden;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .video-container iframe {
+            position: absolute;
+            top:0; left:0;
+            width:100%; height:100%;
+            border: none;
+        }
+
+        /* Galerie d'images */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 250px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: #fff;
+            padding: 1rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+        }
+
+        /* Styles pour le contenu des articles */
+        .article-content {
+            background-color: var(--card-bg-color);
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 4rem;
+        }
+        
+        .article-title {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            font-family: var(--font-secondary);
+            text-align: center;
+        }
+        
+        .article-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .article-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .article-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .article-highlight {
+            background: linear-gradient(90deg, rgba(168,107,7,0.2) 0%, rgba(90,176,233,0.2) 100%);
+            padding: 2rem;
+            border-left: 4px solid var(--secondary-color);
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+
+        /* Pied de page */
+        footer {
+            background-color: #000;
+            color: #aaa;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        footer .container {
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            border: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle.transparent {
+            background-color: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        /* Effets fade-in pour les sections */
+        .fade-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.6s ease-out, transform 2.6s ease-out;
+        }
+        
+        .fade-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        
+        
+/* Ajouter ces styles dans la balise <style> */
+.article-nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Styles pour le bouton animé */
+.animated-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 30px;
+    background-color: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 50px;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.animated-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        rgba(255,255,255,0) 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+    z-index: -1;
+}
+
+.animated-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.animated-cta:hover::before {
+    transform: translateX(100%);
+}
+
+.animated-cta:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.animated-cta span {
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+.animated-cta:hover span {
+    transform: translateX(5px);
+}
+
+.arrow {
+    width: 18px;
+    height: 18px;
+    fill: white;
+    transition: transform 0.3s ease;
+}
+
+.animated-cta:hover .arrow {
+    transform: translateX(8px);
+}
+
+/* Animation du fond au survol */
+@keyframes shine {
+    0% { background-position: -100% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .article-nav {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .prev, .next {
+        order: 2;
+    }
+    
+    .animated-cta {
+        order: 1;
+        margin: 15px 0;
+        padding: 12px 25px;
+    }
+}
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .article-content {
+                padding: 2rem;
+            }
+            
+            .article-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hamburger {
+                display: flex;
+                z-index: 1001;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .article-text {
+                font-size: 1rem;
+            }
+
+            /* Positionnement fixe pour le menu mobile */
+.nav-links {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    height: calc(100vh - 80px);
+    background-color: var(--background-color);
+    flex-direction: column;
+    width: 70%;
+    max-width: 300px;
+    padding: 2rem;
+    transform: translateX(100%); /* Commence hors écran */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; /* S'assure qu'il est au-dessus du contenu */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Ombre pour le distinguer */
+    overflow-y: auto; /* Permet le défilement si le menu est long */
+}
+
+.nav-links.active {
+    transform: translateX(0); /* Fait glisser le menu dans la vue */
+}
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .partner-card {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 0;
+            }
+            
+            .article-content {
+                padding: 1.5rem;
+            }
+            
+            .article-title {
+                font-size: 1.6rem;
+            }
+            
+            .article-subtitle {
+                font-size: 1rem;
+            }
+            
+            .article-highlight {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Actualité </h1>
+    <!-- Header -->
+        <header id="main-header">
+        <nav>
+            <a href="index.html" class="logo-link">
+                <img src="./assets/img/logo.png" alt="Logo Design Plus Entreprise" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="actualite.html" class="active">Actualité</a></li>
+                <li><a href="index.html#about">À Propos</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html" >Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button id="hamburger-menu" class="hamburger" aria-label="Menu mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <!-- <section class="hero">
+        <div class="hero-content">
+            <h1>Actualités</h1>
+            <p class="slogan">Découvrez nos dernières réalisations et événements</p>
+        </div>
+    </section> -->
+
+
+
+    <!-- Section OHADA -->
+    <section id="ohada" class="container section-animate">
+        <div class="article-content">
+            <h2 class="article-title">Design Plus au 14e Concours Génie en Herbe OHADA</h2>
+            <p class="article-subtitle">Un engagement panafricain pour la jeunesse et le droit des affaires</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item fade-section">
+                    <img src="./assets/img/ohada-1.jpg" alt="Concours OHADA à Kinshasa">
+                    <div class="gallery-caption">Cérémonie d'ouverture du concours OHADA</div>
+                </div>
+                <div class="gallery-item fade-section">
+                    <img src="./assets/img/ohada-02.jpg" alt="Participants au concours">
+                    <div class="gallery-caption">Les jeunes talents en compétition</div>
+                </div>
+                <div class="gallery-item fade-section">
+                    <img src="./assets/img/ohada-03.jpg" alt="Design Plus en action">
+                    <div class="gallery-caption">L'équipe Design Plus lors de l'événement</div>
+                </div>
+            </div>
+            
+            <p class="article-text">
+                Du professionnalisme, de la créativité et de l'engagement : c'est avec ces valeurs que Design Plus Entreprise a eu l'honneur d'accompagner la 14e édition du Concours Génie en Herbe OHADA, organisée cette année à Kinshasa, en République Démocratique du Congo. Cet événement panafricain met à l'honneur une jeunesse engagée, l'intelligence juridique, la rigueur académique et l'esprit d'équipe autour du droit des affaires en Afrique.
+            </p>
+            
+            <p class="article-text">
+                Notre équipe a été mobilisée pour assurer une communication visuelle percutante et une organisation événementielle irréprochable. De la conception graphique des supports de communication à la gestion logistique des compétitions, chaque détail a été pensé pour valoriser l'excellence des participants et la portée stratégique de cet événement continental.
+            </p>
+            
+            <div class="article-highlight">
+                "Le Concours Génie en Herbe OHADA est bien plus qu'une compétition académique. C'est un creuset où se forgent les futurs leaders juridiques de notre continent. Design Plus Entreprise est fière de contribuer à cette noble initiative qui promeut l'excellence et l'intégration africaine."
+            </div>
+            
+            <p class="article-text">
+                Durant trois jours intenses, plus de 300 étudiants en droit venus de 17 pays africains se sont affrontés dans des joutes oratoires et des épreuves juridiques exigeantes. Notre équipe a capté chaque moment fort de cette compétition, produisant des contenus multimédias qui ont été diffusés sur les réseaux sociaux et relayés par les médias partenaires.
+            </p>
+            
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/3RNQoCixCNo" title="Concours Génie en Herbe OHADA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            
+            <p class="article-text">
+                Au-delà de l'aspect compétitif, le concours a été l'occasion d'organiser des conférences et des ateliers sur les enjeux du droit OHADA dans le développement économique africain. Design Plus Entreprise a mis son expertise en organisation événementielle au service de ces sessions de formation qui ont rassemblé des experts juridiques de renommée internationale.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section Expo Béton -->
+    <section id="beton" class="container section-animate">
+        <div class="article-content">
+            <h2 class="article-title">Design Plus à la 8e Expo Béton de Kinshasa</h2>
+            <p class="article-subtitle">L'expertise événementielle au service du secteur de la construction</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item fade-section">
+                    <img src="./assets/img/beton.jpg">
+                    <div class="gallery-caption">Vue générale de l'Expo Béton</div>
+                </div>
+                <div class="gallery-item fade-section">
+                    <img src="./assets/img/beton-01.jpg" alt="Stands de l'exposition">
+                    <div class="gallery-caption">Stands professionnels à l'Expo Béton</div>
+                </div>
+            </div>
+            
+            <p class="article-text">
+                Toujours au service de l'excellence et de l'innovation, Design Plus Entreprise a eu le plaisir de contribuer au succès de la 8e édition de l'Expo Béton, l'un des événements majeurs du secteur de la construction, de l'urbanisme et des infrastructures en République Démocratique du Congo, tenue au Centre Financier de Kinshasa.
+            </p>
+            
+            <p class="article-text">
+                À cette occasion, notre équipe a été mobilisée pour accompagner les exposants et partenaires dans l'impression professionnelle de supports de communication (bâches, affiches, kakemonos, flyers, etc.) et le branding et l'habillage des stands, avec une attention particulière à la cohérence visuelle et à l'impact graphique.
+            </p>
+            
+            <div class="article-highlight">
+                "L'Expo Béton est le carrefour incontournable des professionnels du BTP en RDC. Notre mission était de donner à chaque exposant une identité visuelle forte et cohérente pour maximiser leur impact auprès des visiteurs professionnels."
+            </div>
+            
+            <p class="article-text">
+                Nous avons apporté des solutions sur mesure, conçues pour mettre en valeur l'identité de chaque marque et garantir une présence remarquée lors de ce rendez-vous stratégique. Notre équipe technique était présente en continu pendant les trois jours de l'événement pour assurer un support immédiat en cas de besoin.
+            </p>
+            
+            <p class="article-text">
+                Fidèles à notre engagement depuis 2013, nous mettons à disposition notre savoir-faire pour accompagner les acteurs économiques dans la communication visuelle et l'impression, le branding événementiel, la production audiovisuelle, le marketing digital et les technologies, ainsi que l'organisation d'événements clé en main.
+            </p>
+
+            
+            <p class="article-text">
+                Notre mission : offrir des solutions innovantes, créatives et orientées résultats, quel que soit le secteur. Merci aux organisateurs de l'Expo Béton 08 pour leur confiance, et bravo à tous les participants pour leur contribution à la construction d'un avenir urbain durable et ambitieux.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section Design Plus -->
+    <section id="design" class="container section-animate">
+        <div class="article-content">
+            <h2 class="article-title">Design Plus et Cuso International</h2>
+            <p class="article-subtitle">Un partenariat pour l'intégration professionnelle des jeunes</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item fade-section">
+                    <img src="./assets/img/team-design-plus-entreprise (1).jpeg" alt="Équipe Design Plus">
+                    <div class="gallery-caption">L'équipe Design Plus en formation</div>
+                </div>
+                <div class="gallery-item fade-section">
+                    <img src="./assets/img/team-design-plus-entreprise (2).jpeg" alt="Jeunes stagiaires">
+                    <div class="gallery-caption">Jeunes stagiaires en formation</div>
+                </div>
+
+            </div>
+            
+            <p class="article-text">
+                Chez Design Plus Entreprise, nous croyons fermement que l'avenir de notre pays repose sur la jeunesse. C'est pourquoi nous sommes fiers d'annoncer notre partenariat avec Cuso International, une organisation canadienne engagée pour le développement humain et l'inclusion sociale, dans le cadre d'un programme visant à favoriser l'intégration professionnelle des jeunes en République Démocratique du Congo.
+            </p>
+            
+            <p class="article-text">
+                Ce partenariat s'inscrit dans une dynamique d'encadrement, d'apprentissage et de stage professionnel au sein de notre agence. L'objectif est clair : offrir aux jeunes talents l'opportunité de se former dans un environnement professionnel réel, tout en développant les compétences essentielles à leur insertion dans le monde du travail.
+            </p>
+            
+            <div class="article-highlight">
+                "Notre partenariat avec Cuso International va au-delà d'une simple formation professionnelle. Il s'agit d'investir dans l'avenir de notre pays en donnant à la jeunesse congolaise les outils pour devenir actrice du développement économique."
+            </div>
+            
+            <p class="article-text">
+                Ce que nous mettons en place :
+            </p>
+            
+            <ul class="article-text">
+                <li>Accueil et encadrement de jeunes stagiaires, issus de divers parcours</li>
+                <li>Formation pratique et mentorat dans nos pôles : audiovisuel, communication, marketing digital, design graphique, événementiel et informatique</li>
+                <li>Suivi personnalisé, afin de favoriser une montée en compétences concrète et mesurable</li>
+                <li>Intégration dans des projets réels, pour valoriser l'expérience terrain</li>
+            </ul>
+            
+            <p class="article-text">
+                En collaboration avec Cuso International, nous contribuons à une vision partagée : celle d'une jeunesse autonome, qualifiée et actrice du développement de son pays. Cette initiative rejoint notre mission depuis 2013, qui est d'accompagner les porteurs de projets avec des solutions innovantes, personnalisées et orientées vers l'impact.
+            </p>
+            
+            <p class="article-text">
+                Chez Design Plus Entreprise, nous ne formons pas seulement des professionnels. Nous formons des bâtisseurs d'avenir. Restez connectés pour découvrir les témoignages, portraits et réussites issus de ce partenariat.
+            </p>
+        </div>
+    </section>
+
+<!-- Navigation entre articles -->
+<div class="container">
+    <div class="article-nav">
+      
+        
+        <!-- Nouveau bouton animé -->
+        <a href="index.html#contact" class="animated-cta">
+            <span>Contactez-nous</span>
+            <svg class="arrow" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+            </svg>
+        </a>
+        
+       
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Design Plus Entreprise. Tous droits réservés.</p>
+            <div class="footer-links">
+            </div>
+        </div>
+    </footer>
+
+    <button style="display: none;" class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <script>
+        // Observer pour les animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Observer pour les titres
+            const titles = document.querySelectorAll('.title-animate');
+            const titleObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        titleObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            titles.forEach(title => titleObserver.observe(title));
+
+            // Observer pour les sections
+            const sections = document.querySelectorAll('.section-animate');
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        sectionObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+
+            sections.forEach(sec => sectionObserver.observe(sec));
+            
+            // Observer pour les textes d'article
+            const articleTexts = document.querySelectorAll('.article-text');
+            const textObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+
+            articleTexts.forEach(text => textObserver.observe(text));
+            
+            // Observer pour les éléments de galerie
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const galleryObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        galleryObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+
+            galleryItems.forEach(item => galleryObserver.observe(item));
+            
+            // Toggle du thème
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                
+                // Mise à jour de l'icône
+                themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            });
+            
+            // Menu mobile
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('is-active');
+                navLinks.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+        });
+    </script>
 </body>
 </html>

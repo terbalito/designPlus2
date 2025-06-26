@@ -911,11 +911,12 @@ body.menu-open {
                 <img src="./assets/img/logo.png" alt="Logo Design Plus Entreprise" class="logo-img">
             </a>
             <ul class="nav-links">
-                <li><a href="index.html">Accueil</a></li>
+                
+                <li><a href="index.html"class="active">Accueil</a></li>
                 <li><a href="actualite.html">Actualité</a></li>
                 <li><a href="index.html#about">À Propos</a></li>
                 <li><a href="services.html">Services</a></li>
-                <li><a href="portfolio.html" class="active">Portfolio</a></li>
+                <li><a href="portfolio.html" >Portfolio</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
             <button id="hamburger-menu" class="hamburger" aria-label="Menu mobile">
@@ -964,7 +965,7 @@ body.menu-open {
             <h2 class="section-title title-animate">Actualités</h2>
             <div class="news-grid">
                 <article class="news-card">
-                <a href="ohada.html" class="card-link">
+                <a href="actualite.html#ohada" " class="card-link">
                     <img src="./assets/img/ohada.jpg" alt="Visuel projet OHADA">
                     <div class="news-content">
                     <h3>Design Plus Entreprise au cœur du 14e Concours Génie en Herbe OHADA à Kinshasa</h3>
@@ -977,7 +978,7 @@ body.menu-open {
                 </article>
 
                 <article class="news-card">
-                    <a href="ohada.html" class="card-link">
+                    <a href="actualite.html#beton" class="card-link">
                     <img src="./assets/img/beton.jpg" alt="Visuel Expo Béton">
                     <div class="news-content">
                         <h3>Design Plus Entreprise accompagne la 8e Expo Béton au Centre Financier de Kinshasa</h3>
@@ -1015,7 +1016,7 @@ body.menu-open {
                 </article>
 
                 <article class="news-card">
-                    <a href="ohada.html" class="card-link">
+                    <a href="actualite.html#design" class="card-link">
                     <img src="./assets/img/team-Design-plus-entreprise.jpeg" alt="Visuel Knight School 2.0">
                     <div class="news-content">
                         <h3>Design Plus Entreprise et Cuso International : Un partenariat pour l’intégration professionnelle des jeunes en RDC</h3>
@@ -1238,60 +1239,60 @@ En collaboration avec Cuso International, nous contribuons à une vision partag�
 
     titles.forEach(title => titleObserver.observe(title));
   });
-</script>
+    </script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Observer pour les sections
-    const sections = document.querySelectorAll('.section-animate');
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          sectionObserver.unobserve(entry.target);
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Observer pour les sections
+        const sections = document.querySelectorAll('.section-animate');
+        const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            sectionObserver.unobserve(entry.target);
+            }
+        });
+        }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+        });
+
+        sections.forEach(sec => sectionObserver.observe(sec));
+    });
+    </script>
+
+    <script>
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const API_BASE = 'http://localhost:3000';
+    
+    const data = {
+        name:    e.target.name.value.trim(),
+        email:   e.target.email.value.trim(),
+        subject: e.target.subject.value.trim(),
+        message: e.target.message.value.trim()
+    };
+
+    try {
+        const resp = await fetch(`${API_BASE}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+        });
+        const json = await resp.json();
+        if (json.success) {
+        alert('Merci pour votre message ! Nous vous répondrons très vite.');
+        e.target.reset();
+        } else {
+        throw new Error(json.error || 'Erreur inconnue');
         }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    });
-
-    sections.forEach(sec => sectionObserver.observe(sec));
-  });
-</script>
-
-<script>
-document.getElementById('contact-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const API_BASE = 'http://localhost:3000';
-  
-  const data = {
-    name:    e.target.name.value.trim(),
-    email:   e.target.email.value.trim(),
-    subject: e.target.subject.value.trim(),
-    message: e.target.message.value.trim()
-  };
-
-  try {
-    const resp = await fetch(`${API_BASE}/api/contact`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    const json = await resp.json();
-    if (json.success) {
-      alert('Merci pour votre message ! Nous vous répondrons très vite.');
-      e.target.reset();
-    } else {
-      throw new Error(json.error || 'Erreur inconnue');
+    } catch (err) {
+        console.error(err);
+        alert("Oups, l'envoi a échoué. Merci de réessayer plus tard.");
     }
-  } catch (err) {
-    console.error(err);
-    alert("Oups, l'envoi a échoué. Merci de réessayer plus tard.");
-  }
-});
-</script>
+    });
+    </script>
 
 
 
