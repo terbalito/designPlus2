@@ -551,46 +551,55 @@ body.menu-open {
         }
         [data-theme="dark"] .service-card h3 { color: var(--accent-color); }
 
-        /* Portfolio */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-        .portfolio-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            cursor: pointer;
-            height: 300px;
-        }
-        .portfolio-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.4s ease;
-        }
-        .portfolio-item:hover img {
-            transform: scale(1.1);
-        }
-        .portfolio-item figcaption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            color: #fff;
-            padding: 2rem 1.5rem 1rem;
-            text-align: left;
-            font-weight: 600;
-            font-size: 1.1rem;
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-        }
-        .portfolio-item:hover figcaption {
-            transform: translateY(0);
-        }
+     /* Portfolio Vidéo */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.portfolio-item {
+  position: relative;
+  /* Pour ratio 16:9 */
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.portfolio-item iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s ease;
+}
+
+/* Zoom léger au hover */
+.portfolio-item:hover iframe {
+  transform: scale(1.05);
+}
+
+.portfolio-item figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  color: #fff;
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+
+.portfolio-item:hover figcaption {
+  transform: translateY(0);
+}
+
 
         /* Offres phares */
         .offers-grid {
@@ -964,7 +973,7 @@ body.menu-open {
                 <li><a href="actualite.html">Actualité</a></li>
                 <li><a href="index.html#about">À Propos</a></li>
                 <li><a href="services.html">Services</a></li>
-                <li><a href="portfolio.html" >Portfolio</a></li>
+                <li><a href="#portfolio" >Portfolio</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
             <button id="hamburger-menu" class="hamburger" aria-label="Menu mobile">
@@ -1065,7 +1074,7 @@ body.menu-open {
 
                 <article class="news-card">
                     <a href="actualite.html#design" class="card-link">
-                    <img src="./assets/img/team-Design-plus-entreprise.jpeg" alt="Visuel Knight School 2.0">
+                    <img src="./assets/img/team-Design-plus-entreprise.jpeg" alt="Visuel Design School 2.0">
                     <div class="news-content">
                         <h3>Design Plus Entreprise et Cuso International : Un partenariat pour l’intégration professionnelle des jeunes en RDC</h3>
                         <p class="truncate">Chez Design Plus Entreprise, nous croyons fermement que l’avenir de notre pays repose sur la jeunesse. C’est pourquoi nous sommes fiers d’annoncer notre partenariat avec Cuso International, une organisation canadienne engagée pour le développement humain et l’inclusion sociale, dans le cadre d’un programme visant à favoriser l’intégration professionnelle des jeunes en République Démocratique du Congo.
@@ -1155,34 +1164,57 @@ En collaboration avec Cuso International, nous contribuons à une vision partag�
                 <div class="service-cardy">
                     <i class="fas fa-book-open fa-2x"></i>
                     <h3>Formation & consulting</h3>
-                    <p>Knight School 2.0, coaching et ateliers sur-mesure.</p>
+                    <p>Design School 2.0, coaching et ateliers sur-mesure.</p>
                 </div>
                 </a>
             </div>
         </section>
 
         <!-- Portfolio -->
-        <section id="portfolio" class="container section-animate">
-            <h2 class="section-title title-animate">Notre Portfolio</h2>
-            <div class="portfolio-grid">
-                
-                <figure class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet ARPTC">
-                    <figcaption>ARPTC – Film documentaire sur la transformation digitale</figcaption>
-                </figure>
-                <figure class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet Expo Béton">
-                    <figcaption>Expo Béton – Plateau média & streaming en direct</figcaption>
-                </figure>
-                <figure class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Projet OHADA">
-                    <figcaption>OHADA / ERSUMA – Couverture conférence & émissions TV</figcaption>
-                </figure>
-            </div>
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="portfolio.html" class="cta-button">Voir notre portfolio complet</a>
-            </div>
-        </section>
+<!-- Portfolio -->
+<section id="portfolio" class="container section-animate">
+  <h2 class="section-title title-animate">Notre Portfolio Vidéo</h2>
+  <div class="portfolio-grid">
+    
+    <figure class="portfolio-item">
+      <iframe 
+        src="https://www.youtube.com/embed/4MdTv41pJ6M" 
+        title="Vidéo 1" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+      <figcaption>4MdTv41pJ6M – Aperçu du projet</figcaption>
+    </figure>
+
+    <figure class="portfolio-item">
+      <iframe 
+        src="https://www.youtube.com/embed/oTdzdM6rL68" 
+        title="Vidéo 2" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+      <figcaption>oTdzdM6rL68 – Démo en action</figcaption>
+    </figure>
+
+    <figure class="portfolio-item">
+      <iframe 
+        src="https://www.youtube.com/embed/Ig2YHZXG6hQ" 
+        title="Vidéo 3" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+      <figcaption>Ig2YHZXG6hQ – Retour d’expérience</figcaption>
+    </figure>
+
+  </div>
+  <!-- <div style="text-align: center; margin-top: 2rem;">
+    <a href="portfolio.html" class="cta-button">Voir notre portfolio complet</a>
+  </div> -->
+</section>
+
 
         <!-- Offres phares -->
         <section id="offers" class="container section-animate">
@@ -1193,11 +1225,11 @@ En collaboration avec Cuso International, nous contribuons à une vision partag�
                     <p>Captation photo & vidéo haute définition avec équipe dédiée.</p>
                 </div>
                 <div class="offer-card">
-                    <h3>Knight School 2.0</h3>
+                    <h3>Design School 2.0</h3>
                     <p>Formations certifiantes aux métiers créatifs et digitaux.</p>
                 </div>
                 <div class="offer-card">
-                    <h3>TalkLoy</h3>
+                    <h3>Talk RDC</h3>
                     <p>Plateforme d'échange professionnel et mentoring.</p>
                 </div>
                 <div class="offer-card">
