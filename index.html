@@ -56,6 +56,12 @@
             overflow-x: hidden;
         }
 
+        /* Empêche le défilement du corps lorsque le menu est ouvert */
+body.menu-open {
+    overflow: hidden;
+}
+
+
         /* Conteneur principal */
         .container {
             width: 90%;
@@ -63,6 +69,37 @@
             margin: 0 auto;
             padding: 4rem 0;
         }
+
+        /* Animation initiale : invisible et décalé à droite */
+        .title-animate {
+        opacity: 0;
+        transform: translateX(100px);
+        transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+
+        /* Quand on ajoute la classe .visible, on revient à sa place */
+        .title-animate.visible {
+        opacity: 1;
+        transform: translateX(0);
+        }
+
+        /* Animation initiale : invisible et décalé vers le bas */
+        .section-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: transform 1.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        opacity 1.7s ease-out;
+        }
+
+        /* Quand on ajoute .visible, on revient à sa place */
+        .section-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+  
+
 
         /* Titres de section */
         .section-title {
@@ -72,6 +109,7 @@
             margin-bottom: 3rem;
             text-transform: uppercase;
             position: relative;
+            
         }
 
         [data-theme="light"] .section-title {
@@ -162,19 +200,29 @@
             margin: 0 auto;
         }
 
-        .logo {
-            height: 105px;
-            transition: transform 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--text-color);
-        } 
-        .logo:hover {
-            transform: scale(1.05);
+        .logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
         }
+
+        /* Ajuste la taille de ton logo ici */
+        .logo-img {
+        height: 90px;      /* ou la hauteur que tu veux */
+        width: auto;       /* pour garder les proportions */
+        object-fit: contain;
+        }
+
+        /* Si tu veux garder le texte à côté de l’image, remplace .logo-img par : */
+        .logo {
+        display: flex;
+        align-items: center;
+        }
+        .logo-img {
+        height: 90px;
+        margin-right: 0.5rem;
+        }
+
 
         .nav-links {
             display: flex;
@@ -215,7 +263,12 @@
             cursor: pointer;
             background: none;
             border: none;
+
+            position: relative;
+            z-index: 1001; /* Doit être au-dessus du menu */
         }
+
+
         .hamburger span {
             background: var(--text-color);
             border-radius: 10px;
@@ -422,6 +475,12 @@
             border-radius: 8px;
             border: 1px solid transparent;
             transition: transform 0.3s, border-color 0.3s;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        .service-cardy {
+            background-color: var(--card-bg-color);
+            padding: 2rem;
         }
         .service-card:hover {
             transform: translateY(-5px);
@@ -725,23 +784,27 @@
                 z-index: 1001;
             }
             
-            .nav-links {
-                position: fixed;
-                top: 80px;
-                right: 0;
-                height: calc(100vh - 80px);
-                background-color: var(--background-color);
-                flex-direction: column;
-                width: 70%;
-                max-width: 300px;
-                padding: 2rem;
-                transform: translateX(100%);
-                transition: transform 0.3s ease-in-out;
-            }
-            
-            .nav-links.active {
-                transform: translateX(0);
-            }
+/* Positionnement fixe pour le menu mobile */
+.nav-links {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    height: calc(100vh - 80px);
+    background-color: var(--background-color);
+    flex-direction: column;
+    width: 70%;
+    max-width: 300px;
+    padding: 2rem;
+    transform: translateX(100%); /* Commence hors écran */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; /* S'assure qu'il est au-dessus du contenu */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Ombre pour le distinguer */
+    overflow-y: auto; /* Permet le défilement si le menu est long */
+}
+
+.nav-links.active {
+    transform: translateX(0); /* Fait glisser le menu dans la vue */
+}
             
             .nav-links li {
                 margin: 1.5rem 0;
@@ -794,11 +857,13 @@
     <!-- En-tête -->
     <header id="main-header">
         <nav>
-            <a href="index.html" class="logo-link"><div class="logo">Design Plus Entreprise</div></a>
+            <a href="index.html" class="logo-link">
+                <img src="./assets/img/logo.png" alt="Logo Design Plus Entreprise" class="logo-img">
+            </a>
             <ul class="nav-links">
                 <li><a href="index.html">Accueil</a></li>
                 <li><a href="index.html#about">À Propos</a></li>
-                <li><a href="index.html#services">Services</a></li>
+                <li><a href="services.html">Services</a></li>
                 <li><a href="portfolio.html" class="active">Portfolio</a></li>
                 <li><a href="index.html#contact">Contact</a></li>
             </ul>
@@ -817,8 +882,7 @@
                 <h1>Design Plus Entreprise</h1>
                 <p class="slogan">Agence congolaise de communication, production & tech – depuis 2013</p>
                 <div class="hero-buttons">
-                    <a href="#contact" class="cta-button primary">Demander un devis</a>
-                    <a href="#contact" class="cta-button secondary">Nous contacter</a>
+                    <a href="#contact" class="cta-button primary">Nous contacter</a>
                 </div>
             </div>
         </section>
@@ -845,8 +909,8 @@
         </section>
 
         <!-- Actualités -->
-        <section id="news" class="container fade-section">
-            <h2 class="section-title">Actualités</h2>
+        <section id="news" class="container section-animate">
+            <h2 class="section-title title-animate">Actualités</h2>
             <div class="news-grid">
                 <article class="news-card">
                     <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Visuel projet OHADA">
@@ -876,15 +940,15 @@
         </section>
 
         <!-- À propos -->
-        <section id="about" class="container fade-section">
-            <h2 class="section-title">À Propos de Nous</h2>
+        <section id="about" class="container  section-animate">
+            <h2 class="section-title title-animate">À Propos de Nous</h2>
             <div class="about-content">
                 <div class="about-text">
                     <h3>De 2013 à aujourd'hui : une vision devenue leader.</h3>
                     <p>Fondée à Kinshasa en 2013 par M. James Moussa, Design Plus Entreprise accompagne institutions, marques et entrepreneurs à travers des solutions créatives et innovantes. De notre premier logiciel scolaire à la couverture médiatique d'événements majeurs, notre histoire est celle d'une résilience : de l'informel à l'impact.</p>
                     <blockquote>
                         « Transformer les idées en projets concrets et percutants. »
-                        <footer>— J. Moussa</footer>
+                        <footer>— CEO James Moussa</footer>
                     </blockquote>
                 </div>
                 <div class="about-image">
@@ -894,45 +958,57 @@
         </section>
 
         <!-- Services -->
-        <section id="services" class="container fade-section">
-            <h2 class="section-title">Nos Services</h2>
+        <section id="services" class="container  section-animate">
+            <h2 class="section-title title-animate">Nos Services</h2>
             <div class="services-grid">
-                <div class="service-card">
+                <a href="services.html#strategie-communication" class="service-card">
+                <div class="service-cardy">
                     <i class="fas fa-bullhorn fa-2x"></i>
                     <h3>Communication 360°</h3>
                     <p>Stratégie, campagnes, community management.</p>
                 </div>
-                <div class="service-card">
+                </a>
+                <a   href="services.html#production-audiovisuelle" class="service-card">
+                <div class="service-cardy">
                     <i class="fas fa-film fa-2x"></i>
                     <h3>Production audiovisuelle</h3>
                     <p>Films institutionnels, streaming live, podcasts.</p>
                 </div>
-                <div class="service-card">
+                </a>
+                <a href="services.html#developpement-digital" class="service-card">
+                <div class="service-cardy">
                     <i class="fas fa-code fa-2x"></i>
                     <h3>Développement digital</h3>
                     <p>Sites web & apps sécurisés, SEO/SEA.</p>
                 </div>
-                <div class="service-card">
+                </a>
+                <a href="services.html#design-graphique-motion" class="service-card">
+                <div class="service-cardy">
                     <i class="fas fa-paint-brush fa-2x"></i>
                     <h3>Design graphique & motion</h3>
                     <p>Logos, charte, animations.</p>
                 </div>
-                <div class="service-card">
+                </a>
+                <a href="services.html#evenementiel-clé-en-main" class="service-card">
+                <div class="service-cardy">
                     <i class="fas fa-calendar-alt fa-2x"></i>
                     <h3>Événementiel clé-en-main</h3>
                     <p>Conception, logistique, branding sur site.</p>
                 </div>
-                <div class="service-card">
+                </a>
+                <a href="services.html#formation-consulting" class="service-card">
+                <div class="service-cardy">
                     <i class="fas fa-book-open fa-2x"></i>
                     <h3>Formation & consulting</h3>
                     <p>Knight School 2.0, coaching et ateliers sur-mesure.</p>
                 </div>
+                </a>
             </div>
         </section>
 
         <!-- Portfolio -->
-        <section id="portfolio" class="container fade-section">
-            <h2 class="section-title">Notre Portfolio</h2>
+        <section id="portfolio" class="container section-animate">
+            <h2 class="section-title title-animate">Notre Portfolio</h2>
             <div class="portfolio-grid">
                 
                 <figure class="portfolio-item">
@@ -954,8 +1030,8 @@
         </section>
 
         <!-- Offres phares -->
-        <section id="offers" class="container fade-section">
-            <h2 class="section-title">Nos Offres Phare</h2>
+        <section id="offers" class="container section-animate">
+            <h2 class="section-title title-animate">Nos Offres Phare</h2>
             <div class="offers-grid">
                 <div class="offer-card">
                     <h3>Studio Interne 4K</h3>
@@ -976,38 +1052,11 @@
             </div>
         </section>
 
-        <!-- Équipe & Partenaires -->
-        <section id="team" class="container fade-section">
-            <h2 class="section-title">Nos Partenaires</h2>
-            <div class="team-wrapper">
-                <div class="partners-logos">
-                    <div class="partner-card">
-                        <div class="partner-logo"><i class="fas fa-building"></i></div>
-                        <p>Orange RDC</p>
-                    </div>
-                    <div class="partner-card">
-                        <div class="partner-logo"><i class="fas fa-industry"></i></div>
-                        <p>Bracongo</p>
-                    </div>
-                    <div class="partner-card">
-                        <div class="partner-logo"><i class="fas fa-globe-africa"></i></div>
-                        <p>ONU Femmes</p>
-                    </div>
-                    <div class="partner-card">
-                        <div class="partner-logo"><i class="fas fa-university"></i></div>
-                        <p>OHADA</p>
-                    </div>
-                    <div class="partner-card">
-                        <div class="partner-logo"><i class="fas fa-hotel"></i></div>
-                        <p>Pullman Kinshasa</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+
 
         <!-- Contact -->
-        <section id="contact" class="container fade-section">
-            <h2 class="section-title">Contactez-nous</h2>
+        <section id="contact" class="container section-animate">
+            <h2 class="section-title title-animate">Contactez-nous</h2>
             <div class="contact-wrapper">
                 <div class="contact-form-container">
                     <form id="contact-form">
@@ -1044,7 +1093,7 @@
                         <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     </div>
         
-                    <div id="map">
+                    <div style="display: none;" id="map">
                         <p><i class="fas fa-map-marked-alt"></i> Localisation sur Google Maps</p>
                     </div>
                 </div>
@@ -1055,155 +1104,58 @@
     <footer>
         <div class="container">
             <p>&copy; 2024 Design Plus Entreprise. Tous droits réservés.</p>
-            <div class="footer-links">
+            <div style="display: none;" class="footer-links">
                 <a href="#">Mentions Légales</a>
                 <a href="#">Politique de confidentialité</a>
             </div>
         </div>
     </footer>
 
-    <button id="theme-toggle" class="theme-toggle transparent" aria-label="Changer le thème">
+    <button style="display: none;" id="theme-toggle" class="theme-toggle transparent" aria-label="Changer le thème">
         <i class="fas fa-moon"></i>
     </button>
-
+     <script src="./common.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Menu mobile
-            const hamburger = document.getElementById('hamburger-menu');
-            const navLinks = document.querySelector('.nav-links');
-            
-            if (hamburger && navLinks) {
-                hamburger.addEventListener('click', () => {
-                    navLinks.classList.toggle('active');
-                    hamburger.classList.toggle('is-active');
-                });
-                
-                // Fermer le menu au clic sur un lien
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        navLinks.classList.remove('active');
-                        hamburger.classList.remove('is-active');
-                    });
-                });
-            }
-            
-            // Navigation active au défilement
-            const sections = document.querySelectorAll('main section');
-            const navAnchors = document.querySelectorAll('#main-header nav .nav-links li a');
-            
-            window.addEventListener('scroll', () => {
-                let current = '';
-                
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    
-                    if (pageYOffset >= sectionTop - sectionHeight / 3) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                navAnchors.forEach(a => {
-                    a.classList.remove('active');
-                    if (a.getAttribute('href').includes(current)) {
-                        a.classList.add('active');
-                    }
-                });
-            });
-            
-            // Basculer le thème
-            const themeToggle = document.getElementById('theme-toggle');
-            const themeIcon = themeToggle.querySelector('i');
-            
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                
-                document.documentElement.setAttribute('data-theme', newTheme);
-                themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-                
-                // Sauvegarder la préférence
-                localStorage.setItem('theme', newTheme);
-            });
-            
-            // Charger le thème sauvegardé
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-            }
-            
-            // Gestion du formulaire
-            const contactForm = document.getElementById('contact-form');
-            if (contactForm) {
-                contactForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    
-                    // Simulation d'envoi
-                    setTimeout(() => {
-                        alert('Merci pour votre message ! Nous vous contacterons très rapidement.');
-                        contactForm.reset();
-                    }, 500);
-                });
-            }
-            
-            // Gestion du header transparent sur l'image
-            const header = document.getElementById('main-header');
-            const heroSection = document.getElementById('home');
-            
-            // Observer pour le header
-            const headerObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) {
-                        header.classList.remove('transparent');
-                        themeToggle.classList.remove('transparent');
-                    } else {
-                        header.classList.add('transparent');
-                        themeToggle.classList.add('transparent');
-                    }
-                });
-            }, {
-                threshold: 0.1, // lorsque 10% de la section hero est visible
-            });
-            
-            if (heroSection) {
-                headerObserver.observe(heroSection);
-            }
-            
-            // Observer pour les animations de fade-in
-            const fadeSections = document.querySelectorAll('.fade-section');
-            
-            const sectionObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        // Optionnel: arrêter d'observer une fois visible
-                        // sectionObserver.unobserve(entry.target);
-                    } else {
-                        // Optionnel: enlever l'animation si on remonte
-                        // entry.target.classList.remove('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1,
-            });
-            
-            fadeSections.forEach(section => {
-                sectionObserver.observe(section);
-            });
-            
-            // Initialisation du scroll au chargement
-            window.addEventListener('load', () => {
-                if (window.scrollY > heroSection.offsetHeight * 0.9) {
-                    header.classList.remove('transparent');
-                    themeToggle.classList.remove('transparent');
-                } else {
-                    header.classList.add('transparent');
-                    themeToggle.classList.add('transparent');
-                }
-            });
-        });
-    </script>
-    <script src="common.js"></script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const titles = document.querySelectorAll('.title-animate');
+    const titleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          titleObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    titles.forEach(title => titleObserver.observe(title));
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Observer pour les sections
+    const sections = document.querySelectorAll('.section-animate');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          sectionObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    });
+
+    sections.forEach(sec => sectionObserver.observe(sec));
+  });
+</script>
+
+
+
+   
 </body>
 </html>

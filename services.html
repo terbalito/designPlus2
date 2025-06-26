@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Design Plus Entreprise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Variables globales */
+        :root {
+            --primary-color: #02104f;
+            --secondary-color: #a86b07;
+            --accent-color: #5ab0e9;
+            --background-dark: #0a0a10;
+            --text-dark: #e0e0e0;
+            --card-dark: #1a1113;
+            
+            --background-light: #f4f4f9;
+            --text-light: #1a1113;
+            --card-light: #ffffff;
+
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+
+            --text-color: var(--text-dark);
+            --background-color: var(--background-dark);
+            --card-bg-color: var(--card-dark);
+            --header-bg-color: rgba(10, 10, 16, 0.8);
+        }
+
+        [data-theme="light"] {
+            --text-color: var(--text-light);
+            --background-color: var(--background-light);
+            --card-bg-color: var(--card-light);
+            --header-bg-color: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+        /* Animation initiale : invisible et décalé à droite */
+        .title-animate {
+        opacity: 0;
+        transform: translateX(100px);
+        transition: transform 1.2s ease-out, opacity 1.2s ease-out;
+        }
+
+        /* Quand on ajoute la classe .visible, on revient à sa place */
+        .title-animate.visible {
+        opacity: 1;
+        transform: translateX(0);
+        }
+
+        /* Animation initiale : invisible et décalé vers le bas */
+        .section-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: transform 1.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 1.7s ease-out;
+        }
+
+        /* Quand on ajoute .visible, on revient à sa place */
+        .section-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* Titres de section */
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        [data-theme="light"] .section-title {
+            color: var(--primary-color);
+        }
+        [data-theme="dark"] .section-title {
+            color: var(--accent-color);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* Boutons */
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: #c5821a;
+        }
+
+        [data-theme="light"] .cta-button {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        [data-theme="light"] .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+        /* En-tête */
+        #main-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: var(--header-bg-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background-color 0.3s, backdrop-filter 0.3s, border-bottom 0.3s;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+        }
+
+        #main-header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            height: 105px;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        } 
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            background: var(--text-color);
+            border-radius: 10px;
+            height: 3px;
+            margin: 4px 0;
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            width: 30px;
+        }
+
+        .hamburger.is-active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-9px, 6px);
+        }
+        .hamburger.is-active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.is-active span:nth-child(3) {
+            transform: rotate(45deg) translate(-8px, -8px);
+        }
+
+        /* Services */
+        .services-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .service-category {
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .service-category.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(90, 176, 233, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+        }
+
+        .category-title {
+            font-family: var(--font-secondary);
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: var(--card-bg-color);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(168, 107, 7, 0.2);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--secondary-color);
+            z-index: -1;
+            transition: width 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            width: 100%;
+        }
+
+        .service-card h3 {
+            font-family: var(--font-secondary);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+            position: relative;
+        }
+
+        .service-card p {
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 1.5rem;
+        }
+
+        .service-features li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .service-card .cta-button {
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        /* Processus */
+        .process-section {
+            background-color: var(--card-bg-color);
+            padding: 5rem 0;
+            margin: 5rem 0;
+            position: relative;
+        }
+
+        .process-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .process-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: var(--accent-color);
+            z-index: 1;
+        }
+
+        .process-step {
+            width: 20%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .process-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-family: var(--font-secondary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(90, 176, 233, 0.4);
+        }
+
+        .step-title {
+            font-family: var(--font-secondary);
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        /* Pied de page */
+        footer {
+            background-color: #000;
+            color: #aaa;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        footer .container {
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            border: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .process-steps::before {
+                display: none;
+            }
+            
+            .process-step {
+                width: 100%;
+                margin-bottom: 3rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hamburger {
+                display: flex;
+                z-index: 1001;
+            }
+            
+/* Positionnement fixe pour le menu mobile */
+.nav-links {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    height: calc(100vh - 80px);
+    background-color: var(--background-color);
+    flex-direction: column;
+    width: 70%;
+    max-width: 300px;
+    padding: 2rem;
+    transform: translateX(100%); /* Commence hors écran */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; /* S'assure qu'il est au-dessus du contenu */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Ombre pour le distinguer */
+    overflow-y: auto; /* Permet le défilement si le menu est long */
+}
+
+.nav-links.active {
+    transform: translateX(0); /* Fait glisser le menu dans la vue */
+}
+
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+            
+            .category-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .category-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 0;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .service-card {
+                padding: 1.5rem;
+            }
+            
+            .category-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- En-tête -->
+    <header id="main-header">
+        <nav>
+            <a href="index.html" class="logo-link"><div class="logo">Design Plus Entreprise</div></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="index.html#about">À Propos</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button id="hamburger-menu" class="hamburger" aria-label="Menu mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Section Hero Services -->
+        <section id="services-hero" style="background: linear-gradient(rgba(2, 16, 79, 0.8), rgba(26, 17, 19, 0.8)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover; padding: 8rem 0; text-align: center;">
+            <div class="container">
+                <h1 class="section-title" style="color: #fff; margin-bottom: 1rem;">Nos Services Professionnels</h1>
+                <p style="max-width: 800px; margin: 0 auto; font-size: 1.2rem; color: #fff;">Solutions complètes pour transformer votre vision en réalité digitale</p>
+            </div>
+        </section>
+
+        <!-- Introduction -->
+        <section class="container">
+            <div class="services-intro">
+                <p>Depuis 2013, Design Plus Entreprise accompagne les entreprises et institutions dans leur transformation digitale. Notre approche 360° combine stratégie, créativité et technologie pour des résultats concrets et mesurables.</p>
+                <p>Découvrez notre gamme complète de services conçus pour répondre à tous vos besoins en communication, développement digital et événementiel.</p>
+            </div>
+        </section>
+
+        <!-- Catégorie de services -->
+        <section id="strategie-communication" class="container service-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h2 class="category-title title-animate">Stratégie & Communication</h2>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card section-animate">
+                    <h3>Stratégie 360°</h3>
+                    <p>Élaboration de stratégies de communication complètes adaptées à vos objectifs spécifiques.</p>
+                    <ul class="service-features">
+                        <li>Analyse de marché approfondie</li>
+                        <li>Définition d'objectifs SMART</li>
+                        <li>Planification multi-canal</li>
+                        <li>KPI de performance</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate" >
+                    <h3>Identité de marque</h3>
+                    <p>Création et gestion d'identités visuelles fortes et cohérentes.</p>
+                    <ul class="service-features">
+                        <li>Design de logo</li>
+                        <li>Charte graphique complète</li>
+                        <li>Guidelines de marque</li>
+                        <li>Brand storytelling</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Marketing digital</h3>
+                    <p>Solutions intégrées pour booster votre présence en ligne.</p>
+                    <ul class="service-features">
+                        <li>Campagnes SEO/SEA</li>
+                        <li>Publicité en ligne (Google Ads, Meta Ads)</li>
+                        <li>Email marketing</li>
+                        <li>Analyse et optimisation</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Community Management</h3>
+                    <p>Gestion stratégique de vos plateformes sociales.</p>
+                    <ul class="service-features">
+                        <li>Stratégie de contenu</li>
+                        <li>Modération et engagement</li>
+                        <li>Campagnes sociales</li>
+                        <li>Analyse de performance</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catégorie de services -->
+        <section id="developpement-digital" class="container service-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h2 class="category-title title-animate">Développement digital</h2>
+            </div>
+            
+            <div class="services-grid section-animate">
+                <div class="service-card section-animate">
+                    <h3>Sites web responsive</h3>
+                    <p>Création de sites web modernes et performants pour tous les écrans.</p>
+                    <ul class="service-features">
+                        <li>Design sur mesure</li>
+                        <li>Intégration mobile-first</li>
+                        <li>Optimisation des performances</li>
+                        <li>Sécurité renforcée</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Applications web & mobiles</h3>
+                    <p>Développement d'applications innovantes pour votre business.</p>
+                    <ul class="service-features">
+                        <li>UX/UI design</li>
+                        <li>Développement frontend et backend</li>
+                        <li>Applications natives et hybrides</li>
+                        <li>Intégration API</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Référencement SEO/SEA</h3>
+                    <p>Optimisation de votre visibilité dans les moteurs de recherche.</p>
+                    <ul class="service-features">
+                        <li>Audit technique SEO</li>
+                        <li>Stratégie de mots-clés</li>
+                        <li>Optimisation on-page/off-page</li>
+                        <li>Gestion de campagnes SEA</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Solutions e-commerce</h3>
+                    <p>Plateformes de vente en ligne performantes et sécurisées.</p>
+                    <ul class="service-features">
+                        <li>Intégration de paiement</li>
+                        <li>Gestion de catalogue</li>
+                        <li>Solutions sur mesure</li>
+                        <li>Maintenance et support</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catégorie de services -->
+        <section id="production-audiovisuelle" class="container service-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h2 class="category-title title-animate">Production audiovisuelle & contenu multimédia</h2>
+            </div>
+            
+            <div class="services-grid section-animate">
+                <div class="service-card section-animate">
+                    <h3>Production vidéo</h3>
+                    <p>Réalisation de contenus vidéo professionnels.</p>
+                    <ul class="service-features">
+                        <li>Films institutionnels</li>
+                        <li>Publicités et spots TV</li>
+                        <li>Documentaires</li>
+                        <li>Contenu cinématographique</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Production télévisuelle</h3>
+                    <p>Création de contenus pour la télévision.</p>
+                    <ul class="service-features">
+                        <li>Portraits et interviews</li>
+                        <li>Magazines et émissions</li>
+                        <li>Reportages</li>
+                        <li>Talk-shows</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Couverture événementielle</h3>
+                    <p>Captation professionnelle de vos événements.</p>
+                    <ul class="service-features">
+                        <li>Événements corporatifs</li>
+                        <li>Manifestations culturelles</li>
+                        <li>Événements politiques</li>
+                        <li>Cérémonies religieuses</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Contenu digital</h3>
+                    <p>Création de contenus engageants pour vos plateformes digitales.</p>
+                    <ul class="service-features">
+                        <li>Vidéos courtes pour réseaux sociaux</li>
+                        <li>Podcasts et audio branding</li>
+                        <li>Animations et motion design</li>
+                        <li>Contenu interactif</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catégorie de services -->
+        <section id="graphisme-design" class="container service-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h2 class="category-title title-animate">Graphisme & design</h2>
+            </div>
+            
+            <div class="services-grid section-animate">
+                <div class="service-card section-animate">
+                    <h3>Design graphique</h3>
+                    <p>Création visuelle pour tous vos supports.</p>
+                    <ul class="service-features">
+                        <li>Supports imprimés (brochures, flyers)</li>
+                        <li>Design digital (bannières, infographies)</li>
+                        <li>Packaging et merchandising</li>
+                        <li>Signalétique</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Motion design</h3>
+                    <p>Animation et montage vidéo professionnel.</p>
+                    <ul class="service-features">
+                        <li>Animations 2D/3D</li>
+                        <li>Montage et post-production</li>
+                        <li>Effets spéciaux</li>
+                        <li>Vidéos explicatives</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Production visuelle</h3>
+                    <p>Contenus visuels impactants pour votre communication.</p>
+                    <ul class="service-features">
+                        <li>Photographie professionnelle</li>
+                        <li>Direction artistique</li>
+                        <li>Infographies et data visualisation</li>
+                        <li>Illustrations sur mesure</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>UX/UI Design</h3>
+                    <p>Design d'expérience utilisateur optimale.</p>
+                    <ul class="service-features">
+                        <li>Prototypage interactif</li>
+                        <li>Tests utilisateurs</li>
+                        <li>Design d'interface</li>
+                        <li>Design system</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catégorie de services -->
+        <section id="evenementiel" class="container service-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h2 class="category-title title-animate">Événementiel & logistique</h2>
+            </div>
+            
+            <div class="services-grid section-animate">
+                <div class="service-card section-animate">
+                    <h3>Organisation événementielle</h3>
+                    <p>Gestion complète de tous types d'événements.</p>
+                    <ul class="service-features">
+                        <li>Conférences et séminaires</li>
+                        <li>Salons professionnels</li>
+                        <li>Lancements produits</li>
+                        <li>Cérémonies de gala</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Services logistiques</h3>
+                    <p>Solutions complètes pour le bon déroulement de vos événements.</p>
+                    <ul class="service-features">
+                        <li>Accueil et gestion des invités</li>
+                        <li>Coordination technique</li>
+                        <li>Gestion des prestataires</li>
+                        <li>Solutions d'hébergement</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Branding événementiel</h3>
+                    <p>Intégration de votre identité dans l'événement.</p>
+                    <ul class="service-features">
+                        <li>Décoration thématisée</li>
+                        <li>Signalétique sur mesure</li>
+                        <li>Supports promotionnels</li>
+                        <li>Goodies et cadeaux d'entreprise</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Publicité extérieure</h3>
+                    <p>Solutions d'affichage pour maximiser votre visibilité.</p>
+                    <ul class="service-features">
+                        <li>Panneaux publicitaires stratégiques</li>
+                        <li>Affichage urbain</li>
+                        <li>Banderoles et dispositifs événementiels</li>
+                        <li>Solutions digitales outdoor</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catégorie de services -->
+        <section id="formation-consulting" class="container service-category">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h2 class="category-title title-animate">Formation, encadrement & consulting</h2>
+            </div>
+            
+            <div class="services-grid section-animate">
+                <div class="service-card section-animate">
+                    <h3>Formations certifiées</h3>
+                    <p>Programmes de formation aux métiers du digital.</p>
+                    <ul class="service-features">
+                        <li>Design graphique et UI/UX</li>
+                        <li>Production audiovisuelle</li>
+                        <li>Communication digitale</li>
+                        <li>Développement web et mobile</li>
+                    </ul>
+                    <a href="index.html#contact"  class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Knight School</h3>
+                    <p>Encadrement de jeunes talents créatifs.</p>
+                    <ul class="service-features">
+                        <li>Programme d'excellence</li>
+                        <li>Mentorat professionnel</li>
+                        <li>Ateliers pratiques</li>
+                        <li>Opportunités de stage</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Consulting stratégique</h3>
+                    <p>Accompagnement expert pour votre transformation.</p>
+                    <ul class="service-features">
+                        <li>Audit digital</li>
+                        <li>Stratégie de transformation</li>
+                        <li>Optimisation des processus</li>
+                        <li>Accompagnement au changement</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+                
+                <div class="service-card section-animate">
+                    <h3>Sous-traitance spécialisée</h3>
+                    <p>Solutions sur mesure pour compléter vos équipes.</p>
+                    <ul class="service-features">
+                        <li>Ressources dédiées</li>
+                        <li>Expertise à la demande</li>
+                        <li>Gestion de projets externes</li>
+                        <li>Solutions flexibles</li>
+                    </ul>
+                    <a href="index.html#contact" class="cta-button">Demander un devis</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Processus de travail -->
+        <section class="process-section ">
+            <div class="process-container section-animate">
+                <h2 class="section-title" style="color: #fff;">Notre Processus de Travail</h2>
+                
+                <div class="process-steps">
+                    <div class="process-step section-animate">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Écoute</h3>
+                        <p>Compréhension approfondie de vos besoins et objectifs</p>
+                    </div>
+                    
+                    <div class="process-step section-animate">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Conception</h3>
+                        <p>Élaboration d'une stratégie sur mesure</p>
+                    </div>
+                    
+                    <div class="process-step section-animate">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Réalisation</h3>
+                        <p>Développement créatif et technique</p>
+                    </div>
+                    
+                    <div class="process-step section-animate">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Livraison</h3>
+                        <p>Remise du projet et formation</p>
+                    </div>
+                    
+                    <div class="process-step section-animate">
+                        <div class="step-number">5</div>
+                        <h3 class="step-title">Suivi</h3>
+                        <p>Analyse des résultats et optimisation</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Design Plus Entreprise. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="#">Mentions Légales</a>
+                <a href="#">Politique de confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+    <button id="theme-toggle" class="theme-toggle" aria-label="Changer le thème">
+        <i class="fas fa-moon"></i>
+    </button>
+ <script src="./common.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Code spécifique à services.html SEULEMENT
+
+    // Animation au scroll
+    const animatedElements = document.querySelectorAll('.service-category, .process-step');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    });
+
+    animatedElements.forEach(el => observer.observe(el));
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const titles = document.querySelectorAll('.title-animate');
+    const titleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          titleObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    titles.forEach(title => titleObserver.observe(title));
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Observer pour les sections
+    const sections = document.querySelectorAll('.section-animate');
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          sectionObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    });
+
+    sections.forEach(sec => sectionObserver.observe(sec));
+  });
+</script>
+
+
+  
+</body>
+</html>

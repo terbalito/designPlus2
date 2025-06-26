@@ -64,6 +64,19 @@
             padding: 4rem 0;
         }
 
+        /* Animation initiale : invisible et décalé à droite */
+        .title-animate {
+        opacity: 0;
+        transform: translateX(100px);
+        transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+
+        /* Quand on ajoute la classe .visible, on revient à sa place */
+        .title-animate.visible {
+        opacity: 1;
+        transform: translateX(0);
+        }
+
         /* Titres de section */
         .section-title {
             font-family: var(--font-secondary);
@@ -302,9 +315,9 @@
             margin-bottom: 4rem;
             color: var(--accent-color);
             position: relative;
-            opacity: 0;
+            /* opacity: 0;
             transform: translateX(100px);
-            transition: all 2.8s ease-out;
+            transition: all 2.8s ease-out; */
         }
         
         .trust-title.visible {
@@ -340,7 +353,7 @@
             backdrop-filter: blur(10px);
             opacity: 0;
             transform: translateY(50px);
-            transition: all 0.6s ease-out 0.2s;
+            transition: all 1.6s ease-out 0.2s;
         }
         
         .trust-intro.visible {
@@ -574,19 +587,27 @@
                 z-index: 1001;
             }
             
-            .nav-links {
-                position: fixed;
-                top: 80px;
-                right: 0;
-                height: calc(100vh - 80px);
-                background-color: var(--background-color);
-                flex-direction: column;
-                width: 70%;
-                max-width: 300px;
-                padding: 2rem;
-                transform: translateX(100%);
-                transition: transform 0.3s ease-in-out;
-            }
+/* Positionnement fixe pour le menu mobile */
+.nav-links {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    height: calc(100vh - 80px);
+    background-color: var(--background-color);
+    flex-direction: column;
+    width: 70%;
+    max-width: 300px;
+    padding: 2rem;
+    transform: translateX(100%); /* Commence hors écran */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; /* S'assure qu'il est au-dessus du contenu */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Ombre pour le distinguer */
+    overflow-y: auto; /* Permet le défilement si le menu est long */
+}
+
+.nav-links.active {
+    transform: translateX(0); /* Fait glisser le menu dans la vue */
+}
             
             .nav-links.active {
                 transform: translateX(0);
@@ -690,7 +711,7 @@
             </div>
             
             <div class="trust-container">
-                <h2 class="trust-title">Ils nous ont fait confiance</h2>
+                <h2 class="trust-title title-animate">Ils nous ont fait confiance</h2>
                 
                 <div class="trust-content">
                     <div class="trust-intro">
@@ -791,60 +812,10 @@
         <i class="fas fa-moon"></i>
     </button>
 
+    <script src="common.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Menu mobile
-            const hamburger = document.getElementById('hamburger-menu');
-            const navLinks = document.querySelector('.nav-links');
-            
-            if (hamburger && navLinks) {
-                hamburger.addEventListener('click', () => {
-                    navLinks.classList.toggle('active');
-                    hamburger.classList.toggle('is-active');
-                });
-                
-                // Fermer le menu au clic sur un lien
-                navLinks.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        navLinks.classList.remove('active');
-                        hamburger.classList.remove('is-active');
-                    });
-                });
-            }
-            
-            // Navigation active
-            const currentPage = window.location.pathname.split('/').pop();
-            const navAnchors = document.querySelectorAll('#main-header nav .nav-links li a');
-            
-            navAnchors.forEach(a => {
-                if (a.getAttribute('href') === currentPage) {
-                    a.classList.add('active');
-                }
-            });
-            
-            // Basculer le thème
-            const themeToggle = document.getElementById('theme-toggle');
-            const themeIcon = themeToggle.querySelector('i');
-            
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                
-                document.documentElement.setAttribute('data-theme', newTheme);
-                themeIcon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-                
-                // Sauvegarder la préférence
-                localStorage.setItem('theme', newTheme);
-            });
-            
-            // Charger le thème sauvegardé
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                document.documentElement.setAttribute('data-theme', savedTheme);
-                themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-            }
-            
-            // Animations de défilement
+            // Code UNIQUEMENT spécifique à la page portfolio
             const animatedElements = document.querySelectorAll('.trust-title, .trust-intro, .trust-reasons, .client-card');
             
             const observer = new IntersectionObserver((entries) => {
@@ -863,43 +834,37 @@
                 observer.observe(el);
             });
             
-            // Détecter le défilement pour le header
-            const header = document.getElementById('main-header');
-            let lastScroll = 0;
-            
-            window.addEventListener('scroll', () => {
-                const currentScroll = window.scrollY;
-                
-                // Ajouter/supprimer la classe transparent selon la position
-                if (currentScroll > 100) {
-                    header.classList.remove('transparent');
-                    themeToggle.classList.remove('transparent');
-                } else {
-                    header.classList.add('transparent');
-                    themeToggle.classList.add('transparent');
-                }
-                
-                // Animation pour le titre principal
-                const trustTitle = document.querySelector('.trust-title');
-                if (trustTitle && currentScroll > trustTitle.offsetTop - window.innerHeight + 200) {
-                    trustTitle.classList.add('visible');
-                }
-                
-                lastScroll = currentScroll;
-            });
-            
-            // Initialisation du scroll au chargement
-            window.addEventListener('load', () => {
-                if (window.scrollY > 100) {
-                    header.classList.remove('transparent');
-                    themeToggle.classList.remove('transparent');
-                } else {
-                    header.classList.add('transparent');
-                    themeToggle.classList.add('transparent');
-                }
-            });
+            // // Animation spécifique pour la section trust-title
+            // const trustTitle = document.querySelector('.trust-title');
+            // if (trustTitle) {
+            //     window.addEventListener('scroll', () => {
+            //         if (window.scrollY > trustTitle.offsetTop - window.innerHeight + 200) {
+            //             trustTitle.classList.add('visible');
+            //         }
+            //     });
+            // }
+
+
         });
     </script>
-    <script src="common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const titles = document.querySelectorAll('.title-animate');
+            const titleObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                titleObserver.unobserve(entry.target);
+                }
+            });
+            }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+            });
+
+            titles.forEach(title => titleObserver.observe(title));
+        });
+    </script>
+    <!-- <script src="./common.js"></script> -->
 </body>
 </html>
