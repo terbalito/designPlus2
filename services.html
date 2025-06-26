@@ -193,6 +193,29 @@
             transform: scale(1.05);
         }
 
+               .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        
+        /* Ajuste la taille de ton logo ici */
+        .logo-img {
+        height: 90px;      /* ou la hauteur que tu veux */
+        width: auto;       /* pour garder les proportions */
+        object-fit: contain;
+        }
+
+        /* Si tu veux garder le texte à côté de l’image, remplace .logo-img par : */
+        .logo {
+        display: flex;
+        align-items: center;
+        }
+        .logo-img {
+        height: 90px;
+        margin-right: 0.5rem;
+        }
         .nav-links {
             display: flex;
             list-style: none;
@@ -581,7 +604,9 @@
     <!-- En-tête -->
     <header id="main-header">
         <nav>
-            <a href="index.html" class="logo-link"><div class="logo">Design Plus Entreprise</div></a>
+            <a href="index.html" class="logo-link">
+                <img src="./assets/img/logo.png" alt="Logo Design Plus Entreprise" class="logo-img">
+            </a>
             <ul class="nav-links">
                 <li><a href="index.html">Accueil</a></li>
                 <li><a href="index.html#about">À Propos</a></li>
@@ -1024,7 +1049,7 @@
         </div>
     </footer>
 
-    <button id="theme-toggle" class="theme-toggle" aria-label="Changer le thème">
+    <button style="display: none;" id="theme-toggle" class="theme-toggle" aria-label="Changer le thème">
         <i class="fas fa-moon"></i>
     </button>
  <script src="./common.js"></script>

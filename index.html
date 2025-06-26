@@ -1154,6 +1154,38 @@ body.menu-open {
   });
 </script>
 
+<script>
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const data = {
+    name:    e.target.name.value.trim(),
+    email:   e.target.email.value.trim(),
+    subject: e.target.subject.value.trim(),
+    message: e.target.message.value.trim()
+  };
+
+  try {
+    const resp = await fetch('https://ton-domaine.com/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await resp.json();
+    if (json.success) {
+      alert('Merci pour votre message ! Nous vous répondrons très vite.');
+      e.target.reset();
+    } else {
+      throw new Error(json.error || 'Erreur inconnue');
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Oups, l'envoi a échoué. Merci de réessayer plus tard.");
+  }
+});
+</script>
+
+
 
 
    
