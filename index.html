@@ -652,97 +652,145 @@ body.menu-open {
             font-size: 1rem;
         }
 
-        /* Contact */
-        .contact-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            background-color: var(--card-bg-color);
-            padding: 3rem;
-            border-radius: 8px;
-        }
+    /* ===== CONTACT SECTION ===== */
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    background-color: var(--card-bg-color);
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 5px;
-            border: 1px solid #555;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            font-family: var(--font-primary);
-        }
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
 
-        #contact-form button {
-            width: 100%;
-            border: none;
-            font-size: 1rem;
-        }
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
 
-        .contact-info h3 {
-            font-family: var(--font-secondary);
-            color: var(--accent-color);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-        .contact-info p {
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-        .contact-info i {
-            margin-right: 10px;
-            color: var(--accent-color);
-            width: 20px;
-        }
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-primary);
+    transition: all 0.3s ease;
+}
 
-        .social-links {
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            gap: 1rem;
-        }
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--background-color);
-            color: var(--accent-color);
-            font-size: 1.2rem;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .social-links a:hover {
-            background-color: var(--accent-color);
-            color: #fff;
-        }
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
 
-        #map {
-            height: 250px;
-            width: 100%;
-            border-radius: 8px;
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
+#contact-form button {
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    padding: 14px;
+    transition: transform 0.2s ease;
+}
+
+#contact-form button:hover {
+    transform: translateY(-2px);
+}
+
+.contact-info {
+    position: relative;
+}
+
+.contact-info h3 {
+    font-family: var(--font-secondary);
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.contact-info h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--accent-color);
+}
+
+.contact-info p {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.6;
+}
+
+.contact-info i {
+    margin-right: 12px;
+    color: var(--accent-color);
+    min-width: 20px;
+    position: relative;
+    top: 3px;
+}
+
+.social-links {
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--background-color);
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.social-links a:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#map {
+    height: 250px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+    }
+}
 
         /* Pied de page */
         footer {
@@ -1162,50 +1210,61 @@ En collaboration avec Cuso International, nous contribuons à une vision partag�
 
 
         <!-- Contact -->
-        <section id="contact" class="container section-animate">
-            <h2 class="section-title title-animate">Contactez-nous</h2>
-            <div class="contact-wrapper">
-                <div class="contact-form-container">
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <label for="name">Nom complet</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Adresse e-mail</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Sujet</label>
-                            <input type="text" id="subject" name="subject" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Votre message</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="cta-button">Envoyer le message</button>
-                    </form>
+<section id="contact" class="container section-animate">
+    <h2 class="section-title title-animate">Contactez-nous</h2>
+    <div class="contact-wrapper">
+        <div class="contact-form-container">
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Nom complet</label>
+                    <input type="text" id="name" name="name" required>
                 </div>
-        
-                <div class="contact-info">
-                    <h3>Nos Coordonnées</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> <strong>Adresse :</strong> 01, avenue Dumi, Gombe – Kinshasa, RDC</p>
-                    <p><i class="fas fa-phone"></i> <strong>Téléphone :</strong> +243 81 783 8035</p>
-                    <p><i class="fas fa-envelope"></i> <strong>Email :</strong> contact@designplus.cd</p>
-        
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    </div>
-        
-                    <div style="display: none;" id="map">
-                        <p><i class="fas fa-map-marked-alt"></i> Localisation sur Google Maps</p>
-                    </div>
+                <div class="form-group">
+                    <label for="email">Adresse e-mail</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
+                <div class="form-group">
+                    <label for="subject">Sujet</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Votre message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="cta-button">Envoyer le message</button>
+            </form>
+        </div>
+        
+        <div class="contact-info">
+            <h3>Nos Coordonnées</h3>
+            <p><i class="fas fa-map-marker-alt"></i> <strong>Adresse : </strong>   Immeuble KLC, Première étage, <br>01, avenue Dumi, Gombe – Kinshasa, RDC</p>
+            <p><i class="fas fa-phone"></i> <strong>Téléphone :</strong> +243 89 334 7825 <br> +243 98 638 4848</p>
+            <p><i class="fas fa-envelope"></i> <strong>Email :</strong> contact@dperdc.com</p>
+            
+            <div class="social-links">
+                <a href="https://web.facebook.com/design.plus.entreprise/?_rdc=1&_rdr#" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://x.com/designplusrdc" aria-label="X (Twitter)">
+                    <i class="fab fa-x"></i>
+                </a>
+                <a href="https://www.linkedin.com/company/design-plus-entreprise/?viewAsMember=true" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.instagram.com/design_plus_entreprise/" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://tiktok.com/@designplusrdc" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
             </div>
-        </section>
+            
+            <div style="display: none;" id="map">
+                <p><i class="fas fa-map-marked-alt"></i> Localisation sur Google Maps</p>
+            </div>
+        </div>
+    </div>
+</section>
     </main>
 
     <footer>
