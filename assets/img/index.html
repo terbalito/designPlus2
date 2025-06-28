@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Plus Entreprise - Agence de Communication & Tech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Variables globales */
+        :root {
+            --primary-color: #02104f;
+            --secondary-color: #a86b07;
+            --accent-color: #5ab0e9;
+            --background-dark: #0a0a10;
+            --text-dark: #e0e0e0;
+            --card-dark: #1a1113;
+            
+            --background-light: #f4f4f9;
+            --text-light: #1a1113;
+            --card-light: #ffffff;
+
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+
+            --text-color: var(--text-dark);
+            --background-color: var(--background-dark);
+            --card-bg-color: var(--card-dark);
+            --header-bg-color: rgba(10, 10, 16, 0.8);
+            --hero-overlay-start: rgba(2, 16, 79, 0.7);
+            --hero-overlay-end: rgba(26, 17, 19, 0.8);
+        }
+
+        [data-theme="light"] {
+            --text-color: var(--text-light);
+            --background-color: var(--background-light);
+            --card-bg-color: var(--card-light);
+            --header-bg-color: rgba(255, 255, 255, 0.8);
+            --hero-overlay-start: rgba(255, 255, 255, 0.85);
+            --hero-overlay-end: rgba(244, 244, 249, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        /* Empêche le défilement du corps lorsque le menu est ouvert */
+body.menu-open {
+    overflow: hidden;
+}
+
+
+        /* Conteneur principal */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+        /* Animation initiale : invisible et décalé à droite */
+        .title-animate {
+        opacity: 0;
+        transform: translateX(100px);
+        transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+
+        /* Quand on ajoute la classe .visible, on revient à sa place */
+        .title-animate.visible {
+        opacity: 1;
+        transform: translateX(0);
+        }
+
+        /* Animation initiale : invisible et décalé vers le bas */
+        .section-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: transform 1.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        opacity 1.7s ease-out;
+        }
+
+        /* Quand on ajoute .visible, on revient à sa place */
+        .section-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+  
+
+
+        /* Titres de section */
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            position: relative;
+            
+        }
+
+        [data-theme="light"] .section-title {
+            color: var(--primary-color);
+        }
+        [data-theme="dark"] .section-title {
+            color: var(--accent-color);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* Boutons */
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: #c5821a;
+        }
+
+        [data-theme="light"] .cta-button {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        [data-theme="light"] .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+
+
+        /* Header amélioré pour l'image */
+        #main-header.transparent {
+            background-color: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: none;
+        }
+        
+        #main-header.transparent .nav-links a,
+        #main-header.transparent .logo-link {
+            color: #fff !important;
+        }
+        
+        #main-header.transparent .hamburger span {
+            background: #fff !important;
+        }
+
+        #main-header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        }
+
+        /* Ajuste la taille de ton logo ici */
+        .logo-img {
+        height: 90px;      /* ou la hauteur que tu veux */
+        width: auto;       /* pour garder les proportions */
+        object-fit: contain;
+        }
+
+        /* Si tu veux garder le texte à côté de l’image, remplace .logo-img par : */
+        .logo {
+        display: flex;
+        align-items: center;
+        }
+        .logo-img {
+        height: 90px;
+        margin-right: 0.5rem;
+        }
+
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+
+            position: relative;
+            z-index: 1001; /* Doit être au-dessus du menu */
+        }
+
+
+        .hamburger span {
+            background: var(--text-color);
+            border-radius: 10px;
+            height: 3px;
+            margin: 4px 0;
+            transition: 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            width: 30px;
+        }
+
+        .hamburger.is-active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-9px, 6px);
+        }
+        .hamburger.is-active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.is-active span:nth-child(3) {
+            transform: rotate(45deg) translate(-8px, -8px);
+        }
+
+        /* Section Hero */
+        .hero {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(var(--hero-overlay-start), var(--hero-overlay-end)), 
+                        url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            color: #fff;
+            padding: 0 20px;
+        }
+
+        [data-theme="light"] .hero {
+            color: var(--primary-color);
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-secondary);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-content .slogan {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            animation: fadeInUp 1s ease-out 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .hero-buttons {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Points forts */
+        #strengths {
+            background-color: var(--card-bg-color);
+            padding: 3rem 0;
+        }
+        #strengths .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0;
+        }
+        .strength-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        .strength-item svg {
+            height: 50px;
+            width: 50px;
+            margin-bottom: 1rem;
+            stroke: var(--secondary-color);
+            stroke-width: 1.5;
+        }
+        .strength-item h3 {
+            font-family: var(--font-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            color: var(--text-color);
+        }
+
+        /* Actualités */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background-color: var(--card-bg-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(168, 107, 7, 0.2);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* Rendre la carte entière cliquable sans casser le style */
+        .card-link {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+            height: 100%;
+        }
+        .card-link:hover .news-card {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(168, 107, 7, 0.2);
+        }
+
+
+        .news-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-content h3 {
+            font-family: var(--font-secondary);
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .news-content p {
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+
+        /* Extrait avec « lire la suite » */
+        .news-content p.truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;      /* nombre de lignes souhaitées */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Galerie de la page détail */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .gallery img {
+            width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        /* Vidéo responsive */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* ratio 16:9 */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top:0; left:0;
+            width:100%; height:100%;
+            border: none;
+        }
+
+
+        .read-more {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+
+        /* À propos */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .about-image img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text h3 {
+            font-family: var(--font-secondary);
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text blockquote {
+            margin-top: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 4px solid var(--secondary-color);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .about-text blockquote footer {
+            margin-top: 0.5rem;
+            font-style: normal;
+            font-weight: 600;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: var(--card-bg-color);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: transform 0.3s, border-color 0.3s;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        .service-cardy {
+            background-color: var(--card-bg-color);
+            padding: 2rem;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+        .service-card svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            stroke: var(--accent-color);
+            stroke-width: 1.5;
+        }
+        .service-card h3 {
+            font-family: var(--font-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+        [data-theme="dark"] .service-card h3 { color: var(--accent-color); }
+
+     /* Portfolio Vidéo */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.portfolio-item {
+  position: relative;
+  /* Pour ratio 16:9 */
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.portfolio-item iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s ease;
+}
+
+/* Zoom léger au hover */
+.portfolio-item:hover iframe {
+  transform: scale(1.05);
+}
+
+.portfolio-item figcaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  color: #fff;
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
+}
+
+.portfolio-item:hover figcaption {
+  transform: translateY(0);
+}
+
+
+        /* Offres phares */
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .offer-card {
+            background-color: var(--card-bg-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid rgba(90, 176, 233, 0.3);
+        }
+
+        .offer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(90, 176, 233, 0.2);
+        }
+
+        .offer-card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Équipe & Partenaires */
+        .partners-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .partner-card {
+            width: 150px;
+            height: 150px;
+            background-color: var(--card-bg-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            transition: transform 0.3s;
+        }
+        .partner-card:hover {
+            transform: translateY(-5px);
+        }
+        .partner-logo {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        .partner-card p {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+    /* ===== CONTACT SECTION ===== */
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    background-color: var(--card-bg-color);
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-primary);
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+#contact-form button {
+    width: 100%;
+    border: none;
+    font-size: 1rem;
+    padding: 14px;
+    transition: transform 0.2s ease;
+}
+
+#contact-form button:hover {
+    transform: translateY(-2px);
+}
+
+.contact-info {
+    position: relative;
+}
+
+.contact-info h3 {
+    font-family: var(--font-secondary);
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.contact-info h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--accent-color);
+}
+
+.contact-info p {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.6;
+}
+
+.contact-info i {
+    margin-right: 12px;
+    color: var(--accent-color);
+    min-width: 20px;
+    position: relative;
+    top: 3px;
+}
+
+.social-links {
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--background-color);
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.social-links a:hover {
+    background-color: var(--accent-color);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#map {
+    height: 250px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+    }
+}
+
+        /* Pied de page */
+        footer {
+            background-color: #000;
+            color: #aaa;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        footer .container {
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            border: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle.transparent {
+            background-color: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        /* Effets fade-in pour les sections */
+        .fade-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.6s ease-out, transform 2.6s ease-out;
+        }
+        
+        .fade-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about-content, .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hamburger {
+                display: flex;
+                z-index: 1001;
+            }
+            
+/* Positionnement fixe pour le menu mobile */
+.nav-links {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    height: calc(100vh - 80px);
+    background-color: var(--background-color);
+    flex-direction: column;
+    width: 70%;
+    max-width: 300px;
+    padding: 2rem;
+    transform: translateX(100%); /* Commence hors écran */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000; /* S'assure qu'il est au-dessus du contenu */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Ombre pour le distinguer */
+    overflow-y: auto; /* Permet le défilement si le menu est long */
+}
+
+.nav-links.active {
+    transform: translateX(0); /* Fait glisser le menu dans la vue */
+}
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .partner-card {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 0;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .strength-item, .service-card, .offer-card {
+                padding: 1rem;
+            }
+            
+            .contact-wrapper {
+                padding: 1.5rem;
+            }
+            
+            footer .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- En-tête -->
+    <header id="main-header">
+        <nav>
+            <a href="index.html" class="logo-link">
+                <img src="./assets/img/logo.png" alt="Logo Design Plus Entreprise" class="logo-img">
+            </a>
+            <ul class="nav-links">
+                
+                <li><a href="index.html"class="active">Accueil</a></li>
+                <li><a href="actualite.html">Actualité</a></li>
+                <li><a href="index.html#about">À Propos</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="#portfolio" >Portfolio</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button id="hamburger-menu" class="hamburger" aria-label="Menu mobile">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Section Hero -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Design Plus Entreprise</h1>
+                <p class="slogan">Agence congolaise de communication, production & tech – depuis 2013</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="cta-button primary">Nous contacter</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Points forts -->
+        <section id="strengths" class="fade-section">
+            <div class="container">
+                 <div class="strength-item">
+                    <i class="fas fa-award fa-2x"></i>
+                    <h3>12 ans d'expérience</h3>
+                    <p>Une expertise multisectorielle à votre service depuis 2013.</p>
+                </div>
+                <div class="strength-item">
+                    <i class="fas fa-video fa-2x"></i>
+                    <h3>Studio interne photo & vidéo</h3>
+                    <p>Équipements haut de gamme pour vos projets photo et vidéo.</p>
+                </div>
+                <div class="strength-item">
+                    <i class="fas fa-sync-alt fa-2x"></i>
+                    <h3>Solutions 360°</h3>
+                    <p>Stratégie, création, technologie et événementiel sans couture.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Actualités -->
+        <section id="news" class="container section-animate">
+            <h2 class="section-title title-animate">Actualités</h2>
+            <div class="news-grid">
+                <article class="news-card">
+                <a href="actualite.html#ohada" " class="card-link">
+                    <img src="./assets/img/ohada.jpg" alt="Visuel projet OHADA">
+                    <div class="news-content">
+                    <h3>Design Plus Entreprise au cœur du 14e Concours Génie en Herbe OHADA à Kinshasa</h3>
+                    <p class="truncate">
+                        Du professionnalisme, de la créativité et de l’engagement : c’est avec ces valeurs que Design Plus Entreprise a eu l’honneur d’accompagner la 14e édition du Concours Génie en Herbe OHADA, organisée cette année à Kinshasa, en République Démocratique du Congo. Un événement panafricain, une jeunesse engagée, mettant à l’honneur l’intelligence juridique, la rigueur académique et l’esprit d’équipe autour du droit des affaires en Afrique.
+                    </p>
+                    <span class="read-more">Lire la suite →</span>
+                    </div>
+                </a>
+                </article>
+
+                <article class="news-card">
+                    <a href="actualite.html#beton" class="card-link">
+                    <img src="./assets/img/beton.jpg" alt="Visuel Expo Béton">
+                    <div class="news-content">
+                        <h3>Design Plus Entreprise accompagne la 8e Expo Béton au Centre Financier de Kinshasa</h3>
+                         <p class="truncate">Toujours au service de l’excellence et de l’innovation, Design Plus Entreprise a eu le plaisir de contribuer au succès de la 8e édition de l’Expo Béton, l’un des événements majeurs du secteur de la construction, de l’urbanisme et des infrastructures en République Démocratique du Congo, tenue au Centre Financier de Kinshasa.
+
+    Un savoir-faire au service de la visibilité
+    À cette occasion, notre équipe a été mobilisée pour accompagner les exposants et partenaires dans :
+
+    L’impression professionnelle de supports de communication (bâches, affiches, kakemonos, flyers, etc.)
+
+    Le branding et l’habillage des stands, avec une attention particulière à la cohérence visuelle et à l’impact graphique
+
+    Nous avons apporté des solutions sur mesure, conçues pour mettre en valeur l’identité de chaque marque et garantir une présence remarquée lors de ce rendez-vous stratégique.
+
+    Une expertise transversale au service des événements
+    Fidèles à notre engagement depuis 2013, nous mettons à disposition notre savoir-faire pour accompagner les acteurs économiques dans :
+
+    La communication visuelle et l'impression
+
+    Le branding événementiel
+
+    La production audiovisuelle
+
+    Le marketing digital et les technologies
+
+    L’organisation d’événements clé en main
+
+    Notre mission : offrir des solutions innovantes, créatives et orientées résultats, quel que soit le secteur.
+
+    🏗️ Merci aux organisateurs de l’Expo Béton 08 pour leur confiance, et bravo à tous les participants pour leur contribution à la construction d’un avenir urbain durable et ambitieux.
+    📲 Suivez Design Plus Entreprise pour découvrir d’autres projets et collaborations d’envergure.</p>
+                    <span class="read-more">Lire la suite →</span>
+                    </div>
+                </a>
+                </article>
+
+                <article class="news-card">
+                    <a href="actualite.html#design" class="card-link">
+                    <img src="./assets/img/team-Design-plus-entreprise.jpeg" alt="Visuel Design School 2.0">
+                    <div class="news-content">
+                        <h3>Design Plus Entreprise et Cuso International : Un partenariat pour l’intégration professionnelle des jeunes en RDC</h3>
+                        <p class="truncate">Chez Design Plus Entreprise, nous croyons fermement que l’avenir de notre pays repose sur la jeunesse. C’est pourquoi nous sommes fiers d’annoncer notre partenariat avec Cuso International, une organisation canadienne engagée pour le développement humain et l’inclusion sociale, dans le cadre d’un programme visant à favoriser l’intégration professionnelle des jeunes en République Démocratique du Congo.
+
+Un engagement commun pour l’avenir
+Ce partenariat s’inscrit dans une dynamique d’encadrement, d’apprentissage et de stage professionnel au sein de notre agence. L’objectif est clair : offrir aux jeunes talents l’opportunité de se former dans un environnement professionnel réel, tout en développant les compétences essentielles à leur insertion dans le monde du travail.
+
+Ce que nous mettons en place :
+Accueil et encadrement de jeunes stagiaires, issus de divers parcours
+
+Formation pratique et mentorat dans nos pôles : audiovisuel, communication, marketing digital, design graphique, événementiel et informatique
+
+Suivi personnalisé, afin de favoriser une montée en compétences concrète et mesurable
+
+Intégration dans des projets réels, pour valoriser l’expérience terrain
+
+Un partenariat porteur de sens
+En collaboration avec Cuso International, nous contribuons à une vision partagée : celle d’une jeunesse autonome, qualifiée et actrice du développement de son pays. Cette initiative rejoint notre mission depuis 2013, qui est d’accompagner les porteurs de projets avec des solutions innovantes, personnalisées et orientées vers l’impact.
+
+🤝 Chez Design Plus Entreprise, nous ne formons pas seulement des professionnels. Nous formons des bâtisseurs d’avenir.
+📲 Restez connectés pour découvrir les témoignages, portraits et réussites issus de ce partenariat.</p>
+                <span class="read-more">Lire la suite →</span>
+                    </div>
+                </a>
+                </article>
+            </div>
+        </section>
+
+        <!-- À propos -->
+        <section id="about" class="container  section-animate">
+            <h2 class="section-title title-animate">À Propos de Nous</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>De 2013 à aujourd'hui : une vision devenue leader.</h3>
+                    <p>Fondée à Kinshasa en 2013 par M. James Moussa, Design Plus Entreprise accompagne institutions, marques et entrepreneurs à travers des solutions créatives et innovantes. De notre premier logiciel scolaire à la couverture médiatique d'événements majeurs, notre histoire est celle d'une résilience : de l'informel à l'impact.</p>
+                    <blockquote>
+                        « Transformer les idées en projets concrets et percutants. »
+                        <footer>— CEO James Moussa</footer>
+                    </blockquote>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="L'équipe de Design Plus Entreprise">
+                </div>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section id="services" class="container  section-animate">
+            <h2 class="section-title title-animate">Nos Services</h2>
+            <div class="services-grid">
+                <a href="services.html#strategie-communication" class="service-card">
+                <div class="service-cardy">
+                    <i class="fas fa-bullhorn fa-2x"></i>
+                    <h3>Communication 360°</h3>
+                    <p>Stratégie, campagnes, community management.</p>
+                </div>
+                </a>
+                <a   href="services.html#production-audiovisuelle" class="service-card">
+                <div class="service-cardy">
+                    <i class="fas fa-film fa-2x"></i>
+                    <h3>Production audiovisuelle</h3>
+                    <p>Films institutionnels, streaming live, podcasts.</p>
+                </div>
+                </a>
+                <a href="services.html#developpement-digital" class="service-card">
+                <div class="service-cardy">
+                    <i class="fas fa-code fa-2x"></i>
+                    <h3>Développement digital</h3>
+                    <p>Sites web & apps sécurisés, SEO/SEA.</p>
+                </div>
+                </a>
+                <a href="services.html#design-graphique-motion" class="service-card">
+                <div class="service-cardy">
+                    <i class="fas fa-paint-brush fa-2x"></i>
+                    <h3>Design graphique & motion</h3>
+                    <p>Logos, charte, animations.</p>
+                </div>
+                </a>
+                <a href="services.html#evenementiel-clé-en-main" class="service-card">
+                <div class="service-cardy">
+                    <i class="fas fa-calendar-alt fa-2x"></i>
+                    <h3>Événementiel clé-en-main</h3>
+                    <p>Conception, logistique, branding sur site.</p>
+                </div>
+                </a>
+                <a href="services.html#formation-consulting" class="service-card">
+                <div class="service-cardy">
+                    <i class="fas fa-book-open fa-2x"></i>
+                    <h3>Formation & consulting</h3>
+                    <p>Design School 2.0, coaching et ateliers sur-mesure.</p>
+                </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Portfolio -->
+<!-- Portfolio -->
+<section id="portfolio" class="container section-animate">
+  <h2 class="section-title title-animate">Notre Portfolio Vidéo</h2>
+  <div class="portfolio-grid">
+    
+    <figure class="portfolio-item">
+      <iframe 
+        src="https://www.youtube.com/embed/4MdTv41pJ6M" 
+        title="Vidéo 1" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+      <figcaption>4MdTv41pJ6M – Aperçu du projet</figcaption>
+    </figure>
+
+    <figure class="portfolio-item">
+      <iframe 
+        src="https://www.youtube.com/embed/oTdzdM6rL68" 
+        title="Vidéo 2" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+      <figcaption>oTdzdM6rL68 – Démo en action</figcaption>
+    </figure>
+
+    <figure class="portfolio-item">
+      <iframe 
+        src="https://www.youtube.com/embed/Ig2YHZXG6hQ" 
+        title="Vidéo 3" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
+      <figcaption>Ig2YHZXG6hQ – Retour d’expérience</figcaption>
+    </figure>
+
+  </div>
+  <!-- <div style="text-align: center; margin-top: 2rem;">
+    <a href="portfolio.html" class="cta-button">Voir notre portfolio complet</a>
+  </div> -->
+</section>
+
+
+        <!-- Offres phares -->
+        <section id="offers" class="container section-animate">
+            <h2 class="section-title title-animate">Nos Offres Phare</h2>
+            <div class="offers-grid">
+                <div class="offer-card">
+                    <h3>Studio Interne 4K</h3>
+                    <p>Captation photo & vidéo haute définition avec équipe dédiée.</p>
+                </div>
+                <div class="offer-card">
+                    <h3>Design School 2.0</h3>
+                    <p>Formations certifiantes aux métiers créatifs et digitaux.</p>
+                </div>
+                <div class="offer-card">
+                    <h3>Talk RDC</h3>
+                    <p>Plateforme d'échange professionnel et mentoring.</p>
+                </div>
+                <div class="offer-card">
+                    <h3>Packs PME</h3>
+                    <p>Branding + site vitrine + vidéo à un tarif accessible.</p>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Contact -->
+<section id="contact" class="container section-animate">
+    <h2 class="section-title title-animate">Contactez-nous</h2>
+    <div class="contact-wrapper">
+        <div class="contact-form-container">
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Nom complet</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Adresse e-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Sujet</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Votre message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="cta-button">Envoyer le message</button>
+            </form>
+        </div>
+        
+        <div class="contact-info">
+            <h3>Nos Coordonnées</h3>
+            <p><i class="fas fa-map-marker-alt"></i> <strong>Adresse : </strong>   Immeuble KLC, Première étage, <br>01, avenue Dumi, Gombe – Kinshasa, RDC</p>
+            <p><i class="fas fa-phone"></i> <strong>Téléphone :</strong> +243 89 334 7825 <br> +243 98 638 4848</p>
+            <p><i class="fas fa-envelope"></i> <strong>Email :</strong> contact@dperdc.com</p>
+            
+            <div class="social-links">
+                <a href="https://web.facebook.com/design.plus.entreprise/?_rdc=1&_rdr#" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://x.com/MultimediaEagle" aria-label="X (Twitter)">
+                    <i class="fab fa-x"></i>
+                </a>
+                <a href="https://www.linkedin.com/company/design-plus-entreprise/?viewAsMember=true" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.instagram.com/design_plus_entreprise/" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@designplusentreprise" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+            
+            <div style="display: none;" id="map">
+                <p><i class="fas fa-map-marked-alt"></i> Localisation sur Google Maps</p>
+            </div>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Design Plus Entreprise. Tous droits réservés.</p>
+            <div style="display: none;" class="footer-links">
+                <a href="#">Mentions Légales</a>
+                <a href="#">Politique de confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+    <button style="display: none;" id="theme-toggle" class="theme-toggle transparent" aria-label="Changer le thème">
+        <i class="fas fa-moon"></i>
+    </button>
+     <script src="./common.js"></script>
+    <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const titles = document.querySelectorAll('.title-animate');
+    const titleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          titleObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    titles.forEach(title => titleObserver.observe(title));
+  });
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Observer pour les sections
+        const sections = document.querySelectorAll('.section-animate');
+        const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            sectionObserver.unobserve(entry.target);
+            }
+        });
+        }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+        });
+
+        sections.forEach(sec => sectionObserver.observe(sec));
+    });
+    </script>
+
+    <script>
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const API_BASE = 'http://localhost:3000';
+    
+    const data = {
+        name:    e.target.name.value.trim(),
+        email:   e.target.email.value.trim(),
+        subject: e.target.subject.value.trim(),
+        message: e.target.message.value.trim()
+    };
+
+    try {
+        const resp = await fetch(`${API_BASE}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+        });
+        const json = await resp.json();
+        if (json.success) {
+        alert('Merci pour votre message ! Nous vous répondrons très vite.');
+        e.target.reset();
+        } else {
+        throw new Error(json.error || 'Erreur inconnue');
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Oups, l'envoi a échoué. Merci de réessayer plus tard.");
+    }
+    });
+    </script>
+
+
+
+
+   
+</body>
+</html>
