@@ -1,72 +1,69 @@
 // server.js
-// ---------------------------
-// Journalisation maximale pour debug complet
-
-console.log('🟢 [START] server.js démarre');
-
 import express from 'express';
-import nodemailer from 'nodemailer';
 import cors from 'cors';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-// Création de l'app Express
+dotenv.config();
 const app = express();
-app.use(cors());
+const PORT = process.env.PORT || 3000;
+
+// 1) CORS — autorise TOUTES origines en DEV
+app.use(cors({ origin: '*' }));  // :contentReference[oaicite:3]{index=3}
+
+// 2) JSON parsing
 app.use(express.json());
 
-// Transporteur Nodemailer (Ethereal)
-let transporter;
-nodemailer.createTestAccount()
-  .then(testAccount => {
-    console.log('🛠️ [SMTP] Compte de test créé:', testAccount.user);
-    transporter = nodemailer.createTransport({
-      host: testAccount.smtp.host,
-      port: testAccount.smtp.port,
-      secure: testAccount.smtp.secure,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass
-      }
-    });
-    console.log('✅ [SMTP] Transporteur configuré');
-  })
-  .catch(err => {
-    console.error('❌ [SMTP] Erreur création compte de test:', err);
-  });
+// 3) Configuration SMTP pour Gmail (port 465, SSL/TLS implicite)
+const transporter = nodemailer.createTransport({
+  host:       process.env.SMTP_HOST,                  // smtp.gmail.com
+  port:       Number(process.env.SMTP_PORT),          // 465
+  secure:     process.env.SMTP_SECURE === 'true',     // true pour SSL :contentReference[oaicite:4]{index=4}
+  auth: {
+    user:     process.env.SMTP_USER,                  // ton.compte@gmail.com
+    pass:     process.env.SMTP_PASS                   // mot de passe d’app Google
+  },
+  tls: { rejectUnauthorized: false }                   // pour éviter les problèmes de certificat auto-signé
+});
 
-// Point d'entrée santé
+// Vérifie la connexion SMTP dès le démarrage
+transporter.verify()
+  .then(() => console.log('✅ SMTP configuré correctement'))
+  .catch(err => console.error('❌ Erreur SMTP:', err));
+
+// 4) Route de test
 app.get('/', (req, res) => {
-  console.log('🔍 [GET /] Health check reçu');
-  res.send('🟢 API Contact en ligne');
+  res.json({ success: true, message: 'API Contact OK' });
 });
 
-// Route POST /api/contact
+// 5) Route d’envoi de mail
 app.post('/api/contact', async (req, res) => {
-  console.log('✉️ [POST /api/contact] Requête reçue:', req.body);
-  const { name, email, subject, message } = req.body;
-  if (!name || !email || !subject || !message) {
-    console.warn('⚠️ [POST /api/contact] Données incomplètes');
-    return res.status(400).json({ error: 'Tous les champs sont requis.' });
-  }
-
   try {
-    const info = await transporter.sendMail({
-      from: `"${name}" <${email}>`,
-      to: 'contact@designplus.cd',
-      subject: `[FORM TEST] ${subject}`,
-      text: message,
-      html: `<p>${message.replace(/\n/g,'<br>')}</p><hr><p>Expéditeur: ${name} (${email})</p>`
-    });
-    const previewUrl = nodemailer.getTestMessageUrl(info);
-    console.log('📨 [MAIL SENT] Message envoyé. Preview URL:', previewUrl);
-    res.json({ success: true, previewUrl });
+    const { name, email, subject, message } = req.body;
+    if (!name || !email || !subject || !message) {
+      return res.status(400).json({ success: false, error: 'Tous les champs sont requis.' });
+    }
+
+    const mailOptions = {
+      from:    `"${name}" <${email}>`,
+      to:      process.env.CONTACT_EMAIL,
+      subject: `[Contact Form] ${subject}`,
+      text:    `Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      html:    `<p><strong>Nom:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Message:</strong></p>
+                <p>${message.replace(/\n/g, '<br>')}</p>`
+    };
+
+    await transporter.sendMail(mailOptions);
+    return res.json({ success: true, message: 'Votre message a été envoyé avec succès.' });
   } catch (err) {
-    console.error('❌ [MAIL ERROR] Échec envoi mail:', err);
-    res.status(500).json({ error: 'Impossible d\'envoyer le message.' });
+    console.error('Erreur envoi mail:', err);
+    return res.status(500).json({ success: false, error: "Échec de l'envoi du message. Réessayez plus tard." });
   }
 });
 
-// Démarrage du serveur
-const PORT = process.env.PORT || 3000;
+// 6) Démarrage du serveur
 app.listen(PORT, () => {
-  console.log(`🚀 [LISTEN] Serveur démarré sur http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

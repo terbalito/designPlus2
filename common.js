@@ -107,19 +107,19 @@ hamburger.addEventListener('click', (e) => {
         }
     }
     
-    // 4. Gestion du formulaire
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+    // // 4. Gestion du formulaire
+    // const contactForm = document.getElementById('contact-form');
+    // if (contactForm) {
+    //     contactForm.addEventListener('submit', (e) => {
+    //         e.preventDefault();
             
-            // Simulation d'envoi
-            setTimeout(() => {
-                alert('Merci pour votre message ! Nous vous contacterons très rapidement.');
-                contactForm.reset();
-            }, 500);
-        });
-    }
+    //         // Simulation d'envoi
+    //         setTimeout(() => {
+    //             alert('Merci pour votre message ! Nous vous contacterons très rapidement.');
+    //             contactForm.reset();
+    //         }, 500);
+    //     });
+    // }
     
     // 5. Gestion du header transparent sur l'image
     const header = document.getElementById('main-header');
