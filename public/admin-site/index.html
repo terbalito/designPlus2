@@ -1,0 +1,707 @@
+<?php
+// on ne fait que servir la page, la vraie sécurité c'est Firebase Auth côté client.
+header("Cache-Control: no-store");
+?>
+
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Design Plus Entreprise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <style>
+        /* Variables globales */
+        :root {
+            --primary-color: #02104f;
+            --secondary-color: #a86b07;
+            --accent-color: #5ab0e9;
+            --background-dark: #0a0a10;
+            --text-dark: #e0e0e0;
+            --card-dark: #1a1113;
+            
+            --background-light: #f4f4f9;
+            --text-light: #1a1113;
+            --card-light: #ffffff;
+
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Montserrat', sans-serif;
+
+            --text-color: var(--text-dark);
+            --background-color: var(--background-dark);
+            --card-bg-color: var(--card-dark);
+            --header-bg-color: rgba(10, 10, 16, 0.8);
+        }
+
+        [data-theme="light"] {
+            --text-color: var(--text-light);
+            --background-color: var(--background-light);
+            --card-bg-color: var(--card-light);
+            --header-bg-color: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Empêche le défilement du corps lorsque le menu est ouvert */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+        /* Titres de section */
+        .section-title {
+            font-family: var(--font-secondary);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        /* Boutons */
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            background-color: #c5821a;
+        }
+
+        [data-theme="light"] .cta-button {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+        [data-theme="light"] .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+        /* Page de connexion */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(rgba(2, 16, 79, 0.7), rgba(26, 17, 19, 0.8)), 
+                        url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+        }
+
+        .login-box {
+            background: var(--card-bg-color);
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            font-family: var(--font-secondary);
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: var(--font-primary);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #c5821a;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Tableau de bord */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #555;
+            margin-bottom: 2rem;
+        }
+
+        .logout-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .articles-list {
+            margin-bottom: 3rem;
+        }
+
+        .article-item {
+            background: var(--card-bg-color);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .article-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .article-info h4 {
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .article-date {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .article-actions button {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .edit-btn {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Formulaire d'article */
+        .article-form-container {
+            background: var(--card-bg-color);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .article-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-form textarea, 
+        .article-form input[type="text"],
+        .article-form input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: var(--font-primary);
+        }
+
+        .article-form textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .editor-btn {
+            background: var(--background-color);
+            color: var(--text-color);
+            border: 1px solid #555;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .editor-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .editor-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .submit-btn {
+            background: var(--secondary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Message d'erreur */
+        .error-message {
+            color: #e74c3c;
+            margin-top: 0.5rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 5px;
+            background: var(--accent-color);
+            color: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 0;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .article-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .article-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 1.5rem;
+            }
+            
+            .article-form-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page de connexion -->
+    <div id="login-page" class="login-container">
+        <div class="login-box">
+            <h2>Connexion Admin</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Se connecter</button>
+                <div id="login-error" class="error-message hidden"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tableau de bord (caché initialement) -->
+    <div id="dashboard" class="hidden container">
+        <div class="dashboard-header">
+            <h2 class="section-title">Gestion des Articles</h2>
+            <button id="logout-btn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+
+        <div class="articles-list">
+            <h3>Articles existants</h3>
+            <div id="articles-container">
+                <!-- Les articles seront chargés ici dynamiquement -->
+                <div class="placeholder">
+                    <p>Aucun article pour le moment. Ajoutez votre premier article!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="article-form-container">
+            <h3 id="form-title">Ajouter un nouvel article</h3>
+            <form id="article-form">
+                <div class="form-group">
+                    <label for="article-title">Titre</label>
+                    <input type="text" id="article-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="article-image">Image (URL)</label>
+                    <input type="text" id="article-image" required>
+                </div>
+                <div class="form-group">
+                    <label for="article-alt">Description de l'image (alt)</label>
+                    <input type="text" id="article-alt" required>
+                </div>
+                <div class="form-group">
+                    <label>Contenu</label>
+                    <div class="editor-toolbar">
+                        <button type="button" class="editor-btn" data-command="bold"><i class="fas fa-bold"></i></button>
+                        <button type="button" class="editor-btn" data-command="italic"><i class="fas fa-italic"></i></button>
+                        <button type="button" class="editor-btn" data-command="underline"><i class="fas fa-underline"></i></button>
+                        <button type="button" class="editor-btn" data-command="insertUnorderedList"><i class="fas fa-list-ul"></i></button>
+                        <button type="button" class="editor-btn" data-command="insertOrderedList"><i class="fas fa-list-ol"></i></button>
+                        <button type="button" class="editor-btn" data-command="formatBlock" data-value="blockquote"><i class="fas fa-quote-right"></i></button>
+                        <button type="button" class="editor-btn" data-command="createLink"><i class="fas fa-link"></i></button>
+                        <button type="button" class="editor-btn" data-command="unlink"><i class="fas fa-unlink"></i></button>
+                    </div>
+                    <textarea id="article-content" class="article-content" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Publier</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <span id="notification-message"></span>
+    </div>
+
+    <script>
+         // Configuration Firebase (à remplacer par vos valeurs)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoitIXUoYx7YH6PBXCRmuIhUThXPv-rR4",
+            authDomain: "designplus-6cabb.firebaseapp.com",
+            databaseURL: "https://designplus-6cabb-default-rtdb.firebaseio.com",
+            projectId: "designplus-6cabb",
+            storageBucket: "designplus-6cabb.firebasestorage.app",
+            messagingSenderId: "543823443062",
+            appId: "1:543823443062:web:9c99a16496fa001026db57",
+            measurementId: "G-ME81QL196S"
+            };
+
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // Références aux éléments du DOM
+        const loginPage = document.getElementById('login-page');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('login-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        const articlesContainer = document.getElementById('articles-container');
+        const articleForm = document.getElementById('article-form');
+        const articleTitleInput = document.getElementById('article-title');
+        const articleImageInput = document.getElementById('article-image');
+        const articleAltInput = document.getElementById('article-alt');
+        const articleContentInput = document.getElementById('article-content');
+        const formTitle = document.getElementById('form-title');
+        const loginError = document.getElementById('login-error');
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+        const editorBtns = document.querySelectorAll('.editor-btn');
+
+        // État de l'édition
+        let editingArticleId = null;
+
+        // Écouter l'état d'authentification
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Utilisateur connecté
+                loginPage.classList.add('hidden');
+                dashboard.classList.remove('hidden');
+                loadArticles();
+                showNotification('Connexion réussie!');
+            } else {
+                // Non connecté
+                loginPage.classList.remove('hidden');
+                dashboard.classList.add('hidden');
+            }
+        });
+
+        // Connexion
+        loginForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .catch(error => {
+                    loginError.textContent = error.message;
+                    loginError.classList.remove('hidden');
+                });
+        });
+
+        // Déconnexion
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut();
+            showNotification('Déconnexion réussie!');
+        });
+
+        // Charger les articles
+        function loadArticles() {
+            database.ref('articles').on('value', snapshot => {
+                articlesContainer.innerHTML = '';
+                const articles = snapshot.val();
+
+                if (articles) {
+                    Object.entries(articles).forEach(([id, article]) => {
+                        const articleEl = document.createElement('div');
+                        articleEl.className = 'article-item';
+                        articleEl.innerHTML = `
+                            <div class="article-info">
+                                <h4>${article.title}</h4>
+                                <div class="article-date">${new Date(article.date).toLocaleDateString()}</div>
+                            </div>
+                            <div class="article-actions">
+                                <button class="edit-btn" data-id="${id}"><i class="fas fa-edit"></i> Éditer</button>
+                                <button class="delete-btn" data-id="${id}"><i class="fas fa-trash-alt"></i> Supprimer</button>
+                            </div>
+                        `;
+                        articlesContainer.appendChild(articleEl);
+                    });
+
+                    // Écouteurs pour les boutons d'édition et suppression
+                    document.querySelectorAll('.edit-btn').forEach(btn => {
+                        btn.addEventListener('click', () => editArticle(btn.dataset.id));
+                    });
+
+                    document.querySelectorAll('.delete-btn').forEach(btn => {
+                        btn.addEventListener('click', () => deleteArticle(btn.dataset.id));
+                    });
+                } else {
+                    articlesContainer.innerHTML = '<div class="placeholder"><p>Aucun article pour le moment. Ajoutez votre premier article!</p></div>';
+                }
+            });
+        }
+
+        // Éditer un article
+        function editArticle(id) {
+            database.ref(`articles/${id}`).once('value', snapshot => {
+                const article = snapshot.val();
+                if (article) {
+                    editingArticleId = id;
+                    articleTitleInput.value = article.title;
+                    articleImageInput.value = article.imageUrl;
+                    articleAltInput.value = article.imageAlt;
+                    articleContentInput.value = article.content;
+                    formTitle.textContent = 'Éditer l\'article';
+                    window.scrollTo({ top: document.getElementById('article-form').offsetTop, behavior: 'smooth' });
+                    showNotification('Article chargé pour édition');
+                }
+            });
+        }
+
+        // Supprimer un article
+        function deleteArticle(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
+                database.ref(`articles/${id}`).remove()
+                    .then(() => showNotification('Article supprimé avec succès!'))
+                    .catch(error => showNotification('Erreur lors de la suppression: ' + error.message, true));
+            }
+        }
+
+        // Soumettre le formulaire (ajout/édition)
+        articleForm.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const title = articleTitleInput.value;
+            const imageUrl = articleImageInput.value;
+            const imageAlt = articleAltInput.value;
+            const content = articleContentInput.value;
+            const date = new Date().toISOString();
+
+            if (editingArticleId) {
+                // Mise à jour
+                database.ref(`articles/${editingArticleId}`).update({
+                    title,
+                    imageUrl,
+                    imageAlt,
+                    content,
+                    date
+                })
+                .then(() => {
+                    showNotification('Article mis à jour avec succès!');
+                    resetForm();
+                })
+                .catch(error => showNotification('Erreur lors de la mise à jour: ' + error.message, true));
+            } else {
+                // Nouvel article
+                database.ref('articles').push({
+                    title,
+                    imageUrl,
+                    imageAlt,
+                    content,
+                    date
+                })
+                .then(() => {
+                    showNotification('Article publié avec succès!');
+                    resetForm();
+                })
+                .catch(error => showNotification('Erreur lors de la publication: ' + error.message, true));
+            }
+        });
+
+        // Réinitialiser le formulaire
+        function resetForm() {
+            articleForm.reset();
+            editingArticleId = null;
+            formTitle.textContent = 'Ajouter un nouvel article';
+        }
+
+        // Afficher une notification
+        function showNotification(message, isError = false) {
+            notificationMessage.textContent = message;
+            notification.style.background = isError ? '#e74c3c' : 'var(--accent-color)';
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Gestion de l'éditeur de texte
+        editorBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const command = btn.dataset.command;
+                const value = btn.dataset.value || null;
+                
+                // Appliquer la commande
+                document.execCommand(command, false, value);
+                
+                // Mettre en surbrillance le bouton actif
+                if (['bold', 'italic', 'underline'].includes(command)) {
+                    btn.classList.toggle('active', document.queryCommandState(command));
+                }
+            });
+        });
+
+        // Activer/désactiver les boutons d'édition
+        articleContentInput.addEventListener('mouseup', () => {
+            editorBtns.forEach(btn => {
+                const command = btn.dataset.command;
+                if (['bold', 'italic', 'underline'].includes(command)) {
+                    btn.classList.toggle('active', document.queryCommandState(command));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
